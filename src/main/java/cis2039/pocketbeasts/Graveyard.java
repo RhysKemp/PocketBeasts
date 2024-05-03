@@ -16,26 +16,11 @@
  */
 package cis2039.pocketbeasts;
 
-import java.util.ArrayList;
-
 /**
- *
  * @author Steven Mead
  * @author Chris Curry
+ * @author Rhys Kemp
  */
-public class Graveyard {
-    
-    private final ArrayList<Card> cards;
+public class Graveyard extends AbstractCardGroup {
 
-    public Graveyard() {
-        this.cards = new ArrayList<>();
-    }
-    
-    public void add(Card card) {
-        this.cards.add(card);
-    }
-    
-    public int count() {
-        return this.cards.size();
-    }
 }

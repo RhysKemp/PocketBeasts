@@ -20,6 +20,7 @@ package cis2039.pocketbeasts;
  *
  * @author Steven Mead
  * @author Chris Curry
+ * @author Rhys Kemp
  */
 public class Card implements Comparable<Card> {
 

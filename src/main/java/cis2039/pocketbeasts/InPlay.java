@@ -16,42 +16,16 @@
  */
 package cis2039.pocketbeasts;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Steven Mead
  * @author Chris Curry
+ * @author Rhys Kemp
  */
-public class InPlay {
-    
-    private final ArrayList<Card> cards;
+public class InPlay extends AbstractCardGroup {
 
-    public InPlay() {
-        this.cards = new ArrayList<>();
-    }
-
-    public ArrayList<Card> getCards() {
-        return cards;
-    }
-    
     public Card getCard(int index) {
         return cards.get(index);
     }
-    
-    public void add(Card card) {
-        this.cards.add(card);
-    }
-    
-    public void remove(Card card) {
-        this.cards.remove(card);
-    }
-    
-    public void removeAll(ArrayList<Card> cards) {
-        this.cards.removeAll(cards);
-    }
-    
-    public int count() {
-        return this.cards.size();
-    }
+
 }

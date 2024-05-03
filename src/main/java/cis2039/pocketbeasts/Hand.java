@@ -16,43 +16,28 @@
  */
 package cis2039.pocketbeasts;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 /**
  *
  * @author Steven Mead
  * @author Chris Curry
+ * @author Rhys Kemp
  */
-public class Hand {
-    
-    private final ArrayList<Card> cards;
+public class Hand extends AbstractCardGroup {
 
-    public Hand() {
-        this.cards = new ArrayList<>();
-    }
-
-    public ArrayList<Card> getCards() {
-        return this.cards;
-    }
-    
+    /**
+     * Constructor for Hand
+     */
+    @Override
     public void add(Card card) {
         this.cards.add(card);
         this.sort();
     }
-    
-    public void remove(Card card) {
-        this.cards.remove(card);
-    }
-    
-    public void removeAll(ArrayList<Card> cards) {
-        this.cards.removeAll(cards);
-    }
-    
-    public int count() {
-        return this.cards.size();
-    }
-    
+
+    /**
+     * Sort the cards in the hand by ascending mana cost
+     */
     public void sort() {
         Collections.sort(this.cards);
     }
