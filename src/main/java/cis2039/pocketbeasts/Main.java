@@ -105,10 +105,15 @@ public class Main {
         Player[] players = new Player[] {
             new Player("Steve", new Deck(getStarterDeck())),
             new Player("Chris", new Deck(getStarterDeck()))
-        }; 
-        
+        };
+
+        Game game = new Game();
         for (Player player : players) {
-            player.newGame();
+            game.addPlayer(player);
+            System.out.println(player);
+        }
+        game.newGame();
+        for (Player player : players) {
             System.out.println(player);
         }
         
@@ -117,8 +122,8 @@ public class Main {
         while(run) {
             for (Player player : players) {
                 // Add mana and draw card
-                player.addMana();
-                player.drawCard();
+                game.addMana(player);
+                game.drawCard(player);
 
                 // Print initial play state
                 System.out.println(player);
@@ -201,7 +206,7 @@ public class Main {
                 toRemove = new ArrayList<>();
                 for (Card card : player.getHand().getCards()) {
                     if (card.getManaCost() <= player.getManaAvailable()) {
-                        System.out.println(card.toString());
+                        System.out.println(card);
 
                         String play = getPrompt(
                                 player.getName() + " play " + card.getName() + "? (Yes/No) ", 
