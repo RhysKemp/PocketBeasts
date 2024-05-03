@@ -23,6 +23,7 @@ import java.util.Collections;
  *
  * @author Steven Mead
  * @author Chris Curry
+ * @author Rhys Kemp
  */
 public class Deck {
     

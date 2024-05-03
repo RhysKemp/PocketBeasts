@@ -24,6 +24,7 @@ import java.util.Scanner;
  *
  * @author Steven Mead
  * @author Chris Curry
+ * @author Rhys Kemp
  */
 public class Main {
     
@@ -40,7 +41,6 @@ public class Main {
     
     public static ArrayList<Card> getStarterDeck() {
         ArrayList<Card> starterDeck = new ArrayList<>();
-        
         for (int i=0; i<2; i++) {
             for (Card card : STARTER_CARDS) {
                 starterDeck.add(new Card(card));
