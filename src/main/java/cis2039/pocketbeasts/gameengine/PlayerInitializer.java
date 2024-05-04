@@ -39,7 +39,6 @@ public class PlayerInitializer {
         }
         this.players = new ArrayList<>(playerNames.length);
         for (int i = 0; i < playerNames.length; i++) { // for each player name, create a new player with a starter deck
-            System.out.println(i);
             this.players.add(new Player(playerNames[i]));
             this.players.get(i).setDeck(new Deck(getStarterDeck()));
         }

@@ -20,10 +20,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * Represents a deck of cards in a game of Pocket Beasts.
  *
  * @author Steven Mead
  * @author Chris Curry
  * @author Rhys Kemp
+ * @see Card
+ * @see Player
  */
 public class Deck {
     
@@ -46,4 +49,14 @@ public class Deck {
     public void shuffle() {
         Collections.shuffle(this.cards);
     }
+
+    /**
+     * Checks if the deck is empty.
+     *
+     * @return Boolean - True if the deck is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        return this.cards.isEmpty();
+    }
+
 }

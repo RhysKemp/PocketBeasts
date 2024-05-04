@@ -76,7 +76,7 @@ public class Main {
         // Initialise game and populate with players
         // TODO - Open game to more than two players, but for now just two
         InputHandler inputHandler = new InputHandler();
-        PlayerInitializer playerInitializer = new PlayerInitializer("Steve", "Chris");
+        PlayerInitializer playerInitializer = new PlayerInitializer("Steve", "Chris", "Rhys");
         ArrayList<Player> players = playerInitializer.getPlayers();
 
         // Start game

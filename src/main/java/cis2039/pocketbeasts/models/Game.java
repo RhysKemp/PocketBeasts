@@ -107,8 +107,14 @@ public class Game {
      * @param player The player whose turn it is.
      */
     public void startTurn(Player player) {
+        // Check if the deck is not empty before drawing a card
+        if (!player.getDeck().isEmpty()) {
+            drawCard(player);
+        } else {
+            // Design Choice - fatigue damage if deck is empty - Maybe change if other mechanics added.
+            player.damage(Config.FATIGUE_DAMAGE);
+        }
         regenMana(player);
-        drawCard(player);
         System.out.println(player);
     }
 
@@ -121,6 +127,7 @@ public class Game {
      */
     public void drawCard(Player player) {
         player.getHand().add(player.getDeck().draw());
+
     }
 
     /**
