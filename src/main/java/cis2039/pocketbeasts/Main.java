@@ -16,13 +16,13 @@
  */
 package cis2039.pocketbeasts;
 
-import cis2039.pocketbeasts.models.Card;
-import cis2039.pocketbeasts.models.Deck;
+import cis2039.pocketbeasts.gameengine.GameLoop;
+import cis2039.pocketbeasts.gameengine.PlayerInitializer;
 import cis2039.pocketbeasts.models.Game;
 import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.utils.InputHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -32,42 +32,6 @@ import java.util.Scanner;
  * @author Rhys Kemp
  */
 public class Main {
-    
-    public static final Card[] STARTER_CARDS = new Card[] {
-            new Card ("BR", "Barn Rat", 1, 1, 1),
-            new Card ("SP", "Scampering Pup", 2, 2, 1),
-            new Card ("HB", "Hardshell Beetle", 2, 1, 2),
-            new Card ("VHC", "Vicious House Cat", 3, 3, 2),
-            new Card ("GD", "Guard Dog", 3, 2, 3),
-            new Card ("ARH", "All Round Hound", 3, 3, 3),
-            new Card ("MO", "Moor Owl", 4, 4, 2),
-            new Card ("HT", "Highland Tiger", 5, 4, 4)
-        };
-    
-    public static ArrayList<Card> getStarterDeck() {
-        ArrayList<Card> starterDeck = new ArrayList<>();
-        for (int i=0; i<2; i++) {
-            for (Card card : STARTER_CARDS) {
-                starterDeck.add(new Card(card));
-            }
-        }
-        
-        return starterDeck;
-    }
-    
-    public static String getPrompt(String prompt, String[] validResponse){
-        System.out.print(prompt);
-        
-        Scanner sc = new Scanner(System.in);
-        String response = sc.nextLine();
-        
-        if (Arrays.stream(validResponse).anyMatch(response::equals)) {
-            return response;
-        }
-        
-        return getPrompt(prompt, validResponse);
-    }
-    
     /**
      * @param args the command line arguments
      */
@@ -107,112 +71,22 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
 
-        Player[] players = new Player[] {
-            new Player("Steve", new Deck(getStarterDeck())),
-            new Player("Chris", new Deck(getStarterDeck()))
-        };
+
 
         // Initialise game and populate with players
+        // TODO - Open game to more than two players, but for now just two
+        InputHandler inputHandler = new InputHandler();
+        PlayerInitializer playerInitializer = new PlayerInitializer("Steve", "Chris");
+        ArrayList<Player> players = playerInitializer.getPlayers();
+
+        // Start game
         Game game = new Game();
-        for (Player player : players) {
-            game.addPlayer(player);
-            System.out.println(player);
-        }
+        game.addPlayers(players);
         game.newGame();
-        for (Player player : players) {
-            System.out.println(player);
-        }
-        
-        String winningMessage = "";
-        Boolean run = true;
-        while(run) {
-            for (Player player : players) {
-                // Add mana and draw card
-                game.startTurn(player);
 
-                // HACK assumes only one other player
-                Player otherPlayer = null;
-                for (Player iPlayer : players) {
-                    if (iPlayer != player) {
-                        otherPlayer = iPlayer;
-                    }
-                }
-                if (otherPlayer == null){
-                    winningMessage = "Something has gone terribly wrong...";
-                    run = false;
-                    break;
-                }
-                
-                // Cycle through cards in play to attack
-                for (Card card : player.getInPlay().getCards()) {
-                    System.out.println(card.toString());
+        // Start game loop
+        GameLoop gameLoop = new GameLoop(game);
+        gameLoop.start();
 
-                    String attack = getPrompt(
-                            player.getName() + " attack with " + card.getName() + "? (Yes/No): ", 
-                            new String[]{"Yes", "yes", "y", "No", "no", "n"});
-                    if (attack.equals("Yes") || attack.equals("yes") || attack.equals("y")) {
-
-                        // Choose who to attack, player directly or a player's beast
-                        int attackChoice = 2;
-                        System.out.println("Who would you like to attack? ");
-                        System.out.println("1. " + otherPlayer.getName());
-                        for (Card otherCard: otherPlayer.getInPlay().getCards()) {
-                            System.out.println(attackChoice + ". " + otherCard);
-                            attackChoice++;
-                        }
-
-                        ArrayList<String> prompts = new ArrayList<>();
-                        for (int i=1; i<attackChoice; i++) {
-                            prompts.add(String.valueOf(i));
-                        }
-
-                        String target = getPrompt("Choose a number: ", prompts.toArray(new String[0]));
-                        if (target.equals("1")) { // Player
-                            Game.attackWithCard(card, otherPlayer);
-                            if (otherPlayer.isDead()) {
-                                // if true returned players health <= 0
-                                winningMessage = player.getName() + " wins!";
-                                run = false;
-                                break;
-                            }
-                            System.out.println(otherPlayer.getName() + " is now at " + otherPlayer.getHealth());
-                        }
-                        else { // Beast, index is `target-2`
-                            Card targetCard = otherPlayer.getInPlay().getCard(Integer.parseInt(target)-2);
-                            targetCard.damage(card.getAttack());
-                            card.damage(targetCard.getAttack());
-                        }
-                    }
-                }
-                
-                if (!run) {
-                    break;
-                }
-                
-                // Cycle through cards in play remove "dead" cards (health <= 0)
-                // TODO BUG: this is not removing the card from the other player's inPlay during the attack phase
-                Game.removeDeadCards(players);
-
-                // Play cards from hand
-                for (Card card : player.getHand().getCards()) {
-                    if (card.getManaCost() <= player.getManaAvailable()) {
-                        System.out.println(card);
-
-                        String play = getPrompt(
-                                player.getName() + " play " + card.getName() + "? (Yes/No) ", 
-                                new String[]{"Yes", "yes", "y", "No", "no", "n"});
-                        if (play.equals("Yes") || play.equals("yes") || play.equals("y")) {
-                            game.playCardFromHand(player, card);
-                        }
-                    }
-                }
-                
-                // Print final play state
-                System.out.println("\n".repeat(16));
-                System.out.println(player);
-            }
-        }
-        
-        System.out.println(winningMessage);
     }
 }

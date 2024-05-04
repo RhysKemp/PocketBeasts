@@ -1,19 +1,25 @@
 package cis2039.pocketbeasts.models;
 
-import cis2039.pocketbeasts.Config;
 import cis2039.pocketbeasts.interfaces.Attackable;
+import cis2039.pocketbeasts.utils.Config;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents a game of Pocket Beasts.
+ * <p>
+ * This class contains methods for managing the game state.
  *
  * @author Rhys Kemp
+ *
+ * @see Deck
+ * @see Player
+ * @see Card
+ * @see Attackable
  */
 public class Game {
 
-    private final List<Player> players;
+    private final ArrayList<Player> players;
 
     public Game() {
         this.players = new ArrayList<>();
@@ -31,6 +37,19 @@ public class Game {
     }
 
     /**
+     * Adds multiple players to the game.
+     *
+     * @param players The players to add.
+     */
+    public void addPlayers(ArrayList<Player> players) {
+        this.players.addAll(players);
+        for (Player player : players) {
+            System.out.println(player);
+        }
+
+    }
+
+    /**
      * Removes a player from the game.
      *
      * @param player The player to remove.
@@ -44,7 +63,7 @@ public class Game {
      *
      * @return The list of players.
      */
-    public List<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return this.players;
     }
 
@@ -119,7 +138,7 @@ public class Game {
      *
      * @param players The players to remove dead cards from.
      */
-    public static void removeDeadCards(Player[] players) {
+    public static void removeDeadCards(ArrayList<Player> players) {
         for (Player player : players) {
             ArrayList<Card> toRemove = new ArrayList<>();
             for (Card card : player.getInPlay().getCards()) {

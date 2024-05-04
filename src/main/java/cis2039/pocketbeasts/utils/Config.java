@@ -1,4 +1,4 @@
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.utils;
 
 public class Config {
     public static final int MAX_MANA = 9;

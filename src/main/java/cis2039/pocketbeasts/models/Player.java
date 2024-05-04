@@ -16,8 +16,8 @@
  */
 package cis2039.pocketbeasts.models;
 
-import cis2039.pocketbeasts.*;
 import cis2039.pocketbeasts.interfaces.Attackable;
+import cis2039.pocketbeasts.utils.Config;
 
 /**
  * Represents a player in a game of Pocket Beasts.
@@ -28,25 +28,24 @@ import cis2039.pocketbeasts.interfaces.Attackable;
  */
 public class Player implements Attackable {
 
-    private final String name;
+    private String name;
     private int health;
     private final int MAX_MANA;
     private int manaAvailable;
     private int manaTicker;
 
 
-    private final Deck deck;
+    private Deck deck;
     private final Hand hand;
     private final InPlay inPlay;
     private final Graveyard graveyard;
 
-    public Player(String name, Deck deck) {
+    public Player(String name) {
         this.name = name;
         this.health = Config.INITIAL_HEALTH;
         this.MAX_MANA = Config.MAX_MANA;
         this.manaAvailable = 0;
         this.manaTicker = 0;
-        this.deck = deck;
         this.hand = new Hand();
         this.inPlay = new InPlay();
         this.graveyard = new Graveyard();
@@ -62,6 +61,10 @@ public class Player implements Attackable {
     
     public Deck getDeck() {
         return this.deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
     }
     
     public Hand getHand() {
