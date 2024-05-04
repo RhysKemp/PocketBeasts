@@ -1,4 +1,6 @@
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.abstracts;
+
+import cis2039.pocketbeasts.models.Card;
 
 import java.util.ArrayList;
 

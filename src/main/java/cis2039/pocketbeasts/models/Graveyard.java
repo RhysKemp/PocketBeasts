@@ -14,18 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.models;
+
+import cis2039.pocketbeasts.abstracts.AbstractCardGroup;
 
 /**
- *
  * @author Steven Mead
  * @author Chris Curry
  * @author Rhys Kemp
  */
-public class InPlay extends AbstractCardGroup {
-
-    public Card getCard(int index) {
-        return cards.get(index);
-    }
+public class Graveyard extends AbstractCardGroup {
 
 }

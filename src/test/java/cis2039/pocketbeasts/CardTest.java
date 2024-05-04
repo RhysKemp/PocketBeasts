@@ -4,6 +4,7 @@
  */
 package cis2039.pocketbeasts;
 
+import cis2039.pocketbeasts.models.Card;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.models;
+
+import cis2039.pocketbeasts.abstracts.AbstractCardGroup;
 
 import java.util.Collections;
 

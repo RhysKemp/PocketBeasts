@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.models;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import cis2039.pocketbeasts.abstracts.AbstractCardGroup;
 
 /**
  *
@@ -25,25 +24,16 @@ import java.util.Collections;
  * @author Chris Curry
  * @author Rhys Kemp
  */
-public class Deck {
-    
-    private final ArrayList<Card> cards;
-    
-    public Deck(ArrayList<Card> cards) {
-        this.cards = cards;
+public class InPlay extends AbstractCardGroup {
+
+    /**
+     * Overloaded method to get card at given index.
+     *
+     * @param index The index of the card to get.
+     * @return The card at the given index.
+     */
+    public Card getCard(int index) {
+        return cards.get(index);
     }
-    
-    public int count() {
-        return this.cards.size();
-    }
-    
-    public Card draw() {
-        Card card = this.cards.get(0);
-        this.cards.remove(0);
-        return card;
-    }
-    
-    public void shuffle() {
-        Collections.shuffle(this.cards);
-    }
+
 }

@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.models;
+
+import cis2039.pocketbeasts.interfaces.Attackable;
 
 /**
  *
@@ -22,7 +24,7 @@ package cis2039.pocketbeasts;
  * @author Chris Curry
  * @author Rhys Kemp
  */
-public class Card implements Comparable<Card> {
+public class Card implements Attackable, Comparable<Card> {
 
     private final String id;
     private final String name;
@@ -65,9 +67,16 @@ public class Card implements Comparable<Card> {
     public int getHealth() {
         return this.health;
     }
-    
+
+
+    @Override
     public void damage(int amount) {
         this.health -= amount;
+    }
+
+    @Override
+    public boolean isDead() {
+        return health <= 0;
     }
 
     @Override

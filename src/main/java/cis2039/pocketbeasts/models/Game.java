@@ -1,4 +1,7 @@
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.models;
+
+import cis2039.pocketbeasts.Config;
+import cis2039.pocketbeasts.interfaces.Attackable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,8 @@ public class Game {
     public Game() {
         this.players = new ArrayList<>();
     }
+
+    // PLAYER METHODS
 
     /**
      * Adds a player to the game.
@@ -53,19 +58,42 @@ public class Game {
         return this.players.get(index);
     }
 
+    /**
+     * Adds mana to the player's mana pool.
+     * This is passive regen, not applicable to other methods of mana gain.
+     */
+    public void regenMana(Player player) {
+        player.addMana();
+    }
+
+    // GAME AND TURN METHODS
 
     /**
      * Starts a new game.
-     * Shuffles the deck and deals 4 cards to each player.
+     * Shuffles the deck and deals {@value Config#INITIAL_HAND_SIZE} cards to each player.
      */
     public void newGame() {
         for (Player player : this.players) {
             player.getDeck().shuffle();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < Config.INITIAL_HAND_SIZE; i++) {
                 drawCard(player);
             }
         }
     }
+
+    /**
+     * Starts a player's turn.
+     * Regenerates mana and draws a card.
+     *
+     * @param player The player whose turn it is.
+     */
+    public void startTurn(Player player) {
+        regenMana(player);
+        drawCard(player);
+        System.out.println(player);
+    }
+
+    // CARD METHODS
 
     /**
      * Draws a card for a player.
@@ -77,12 +105,49 @@ public class Game {
     }
 
     /**
-     * Adds mana to the player's mana pool.
+     * Attacks a defender with an attacking card.
+     *
+     * @param attacker The card attacking.
+     * @param defender The target of the attack.
      */
-    public void addMana(Player player) {
-        player.addMana();
+    public static void attackWithCard(Card attacker, Attackable defender) {
+        defender.damage(attacker.getAttack());
     }
 
+    /**
+     * removes dead cards from the game
+     *
+     * @param players The players to remove dead cards from.
+     */
+    public static void removeDeadCards(Player[] players) {
+        for (Player player : players) {
+            ArrayList<Card> toRemove = new ArrayList<>();
+            for (Card card : player.getInPlay().getCards()) {
+                if (card.getHealth() <= 0) {
+                    toRemove.add(card);
+                    player.getGraveyard().add(card);
+                }
+            }
+            player.getInPlay().removeAll(toRemove);
+        }
+    }
+
+    /**
+     * Plays a specific card from a player's hand.
+     *
+     * @param player The player to play the card for.
+     * @param card   The card to play.
+     */
+    public void playCardFromHand(Player player, Card card) {
+        if (player.getManaAvailable() >= card.getManaCost()) {
+            player.getInPlay().add(card);
+            player.getHand().remove(card);
+            player.useMana(card.getManaCost());
+        }
+    }
+
+
+//    TODO - Implement this method and show the game state in the console
 //    @Override
 //    public String toString() {
 //        StringBuilder sb = new StringBuilder();

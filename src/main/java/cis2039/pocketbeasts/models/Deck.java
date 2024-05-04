@@ -14,13 +14,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.models;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
+ *
  * @author Steven Mead
  * @author Chris Curry
  * @author Rhys Kemp
  */
-public class Graveyard extends AbstractCardGroup {
-
+public class Deck {
+    
+    private final ArrayList<Card> cards;
+    
+    public Deck(ArrayList<Card> cards) {
+        this.cards = cards;
+    }
+    
+    public int count() {
+        return this.cards.size();
+    }
+    
+    public Card draw() {
+        Card card = this.cards.get(0);
+        this.cards.remove(0);
+        return card;
+    }
+    
+    public void shuffle() {
+        Collections.shuffle(this.cards);
+    }
 }

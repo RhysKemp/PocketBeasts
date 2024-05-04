@@ -14,7 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
-package cis2039.pocketbeasts;
+package cis2039.pocketbeasts.models;
+
+import cis2039.pocketbeasts.*;
+import cis2039.pocketbeasts.interfaces.Attackable;
 
 /**
  * Represents a player in a game of Pocket Beasts.
@@ -23,7 +26,7 @@ package cis2039.pocketbeasts;
  * @author Chris Curry
  * @author Rhys Kemp
  */
-public class Player {
+public class Player implements Attackable {
 
     private final String name;
     private int health;
@@ -82,16 +85,6 @@ public class Player {
         return this.manaAvailable;
     }
 
-    /**
-     *  Deals damage to the player.
-     *
-     * @param amount The amount of damage to deal to the player.
-     * @return True if the player's health is less than or equal to 0, false otherwise.
-     */
-    public Boolean damage(int amount) {
-        this.health -= amount;
-        return this.health <= 0;
-    }
 
     /**
      * Adds mana to the player's mana pool.
@@ -112,6 +105,16 @@ public class Player {
     public void useMana(int amount) {
         // No validation for mana cost, as this is handled in the game loop
         this.manaAvailable -= amount;
+    }
+
+    @Override
+    public void damage(int amount) {
+        this.health -= amount;
+    }
+
+    @Override
+    public boolean isDead() {
+        return health <= 0;
     }
 
     @Override
