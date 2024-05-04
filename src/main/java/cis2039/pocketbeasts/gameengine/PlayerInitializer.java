@@ -6,6 +6,7 @@ import cis2039.pocketbeasts.models.Deck;
 import cis2039.pocketbeasts.models.Player;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Initialises a new game with the given players.
@@ -28,12 +29,16 @@ public class PlayerInitializer {
      * Each player is given a starter deck of cards.
      *
      * @param playerNames The names of the players in the game.
+     * @throws IllegalArgumentException if playerNames is null or empty
+     * @see Player
+     * @see Deck
      */
     public PlayerInitializer(String... playerNames) {
+        if (playerNames == null || playerNames.length == 0) { // Throws exception if playerNames is null or empty
+            throw new IllegalArgumentException("At least one player is required.");
+        }
         this.players = new ArrayList<>(playerNames.length);
-        System.out.println("\nplayerNames.length: " + playerNames.length);
-        System.out.println("\nthis.players.size(): " + this.players.size());
-        for (int i = 0; i < playerNames.length; i++) {
+        for (int i = 0; i < playerNames.length; i++) { // for each player name, create a new player with a starter deck
             System.out.println(i);
             this.players.add(new Player(playerNames[i]));
             this.players.get(i).setDeck(new Deck(getStarterDeck()));
@@ -61,5 +66,10 @@ public class PlayerInitializer {
         }
         return starterDeck;
     }
+//    public static ArrayList<Card> getStarterDeck() {
+//        return CardLibrary.STARTER_CARDS.stream()
+//                .map(Card::new)
+//                .collect(Collectors.toCollection(ArrayList::new));
+//    }
 
 }

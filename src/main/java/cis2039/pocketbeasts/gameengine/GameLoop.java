@@ -28,12 +28,18 @@ public class GameLoop {
 
     /**
      * Starts the game loop.
+     * @throws IllegalArgumentException if there are no players in the game
      */
     public void start() {
+        if (game.getPlayers().isEmpty()){ // Defensive programming
+            throw new IllegalArgumentException("At least one player is required.");
+        }
+
         String winningMessage = "";
         while (this.isRunning) {
             for (Player player : players) {
                 // Add mana and draw card
+                // TODO BUG: this throws an error when the player's deck is empty
                 game.startTurn(player);
 
                 // HACK assumes only one other player
@@ -51,26 +57,25 @@ public class GameLoop {
 
                 // Cycle through cards in play to attack
                 for (Card card : player.getInPlay().getCards()) {
+                    int index = 0;
                     System.out.println(card.toString());
-                    if (inputHandler.yesNoPrompt(
-                            player.getName() + " attack with " + card.getName() + "? (Yes/No) ")) {
+                    if (inputHandler.attackWithCardPrompt(player.getName(), card.getName())) {
 
-                        // Choose who to attack, player directly or a player's beast
-                        int attackChoice = 2;
-                        System.out.println("Who would you like to attack? ");
-                        System.out.println("1. " + otherPlayer.getName());
-                        for (Card otherCard : otherPlayer.getInPlay().getCards()) {
-                            System.out.println(attackChoice + ". " + otherCard);
-                            attackChoice++;
+                        ArrayList<Player> otherPlayers = new ArrayList<>(players);
+                        otherPlayers.remove(player);
+
+                        // Get target player's ID
+                        int targetPlayerId = inputHandler.attackWhichPlayerPrompt(otherPlayers);
+
+                        for (Player iOtherPlayer : otherPlayers) {
+                            if (targetPlayerId == iOtherPlayer.getId()) {
+                                otherPlayer = iOtherPlayer;
+                            }
                         }
 
-                        ArrayList<String> prompts = new ArrayList<>();
-                        for (int i = 1; i < attackChoice; i++) {
-                            prompts.add(String.valueOf(i));
-                        }
 
-                        String target = inputHandler.getPrompt("Choose a number: ", prompts.toArray(new String[0]));
-                        if (target.equals("1")) { // Player
+                        int target = inputHandler.getAttackChoicePrompt(otherPlayer, card);
+                        if (target == 1) { // Player
                             Game.attackWithCard(card, otherPlayer);
                             if (otherPlayer.isDead()) {
                                 // if true returned players health <= 0
@@ -80,7 +85,7 @@ public class GameLoop {
                             }
                             System.out.println(otherPlayer.getName() + " is now at " + otherPlayer.getHealth());
                         } else { // Beast, index is `target-2`
-                            Card targetCard = otherPlayer.getInPlay().getCard(Integer.parseInt(target) - 2);
+                            Card targetCard = otherPlayer.getInPlay().getCard(target - 2);
                             targetCard.damage(card.getAttack());
                             card.damage(targetCard.getAttack());
                         }
@@ -103,9 +108,11 @@ public class GameLoop {
                     if (card.getManaCost() <= player.getManaAvailable()) {
                         System.out.println(card);
 
-                        if (inputHandler.yesNoPrompt(
-                                player.getName() + " play " + card.getName() + "? (Yes/No) ")) {
+                        if (inputHandler.playCardPrompt(player.getName(), card.getName())) {
                             game.playCardFromHand(player, card);
+                        } else {
+                            // Handle empty deck
+                            System.out.println("No cards left in the deck.");
                         }
                     }
                 }
@@ -119,7 +126,6 @@ public class GameLoop {
         System.out.println(winningMessage);
 
     }
-
 
     /**
      * Stops the game loop.
@@ -138,4 +144,6 @@ public class GameLoop {
     public boolean isRunning() {
         return this.isRunning;
     }
+
+    //
 }

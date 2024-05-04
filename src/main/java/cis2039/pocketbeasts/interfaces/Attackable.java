@@ -12,7 +12,7 @@ public interface Attackable {
     /**
      * Checks if the object's health is <= 0
      *
-     * @return true if the object is dead, false otherwise
+     * @return Boolean - true if the object is dead, false otherwise
      */
     boolean isDead();
 }

@@ -19,10 +19,13 @@ package cis2039.pocketbeasts.models;
 import cis2039.pocketbeasts.interfaces.Attackable;
 
 /**
+ * Represents a card in a game of Pocket Beasts.
  *
  * @author Steven Mead
  * @author Chris Curry
  * @author Rhys Kemp
+ * @see Attackable
+ * @see Comparable
  */
 public class Card implements Attackable, Comparable<Card> {
 
@@ -31,7 +34,16 @@ public class Card implements Attackable, Comparable<Card> {
     private final int manaCost;
     private final int attack;
     private int health;
-    
+
+    /**
+     * Constructor for the Card class.
+     *
+     * @param id The card's unique identifier.
+     * @param name The card's name.
+     * @param manaCost The card's mana cost.
+     * @param attack The card's attack value.
+     * @param health The card's health value.
+     */
     public Card(String id, String name, int manaCost, int attack, int health) {
         this.id = id;
         this.name = name;
@@ -39,7 +51,12 @@ public class Card implements Attackable, Comparable<Card> {
         this.attack = attack;
         this.health = health;
     }
-    
+
+    /**
+     * Copy constructor.
+     *
+     * @param card The card to copy.
+     */
     public Card(Card card) {
         this.id = card.id;
         this.name = card.name;
@@ -71,6 +88,9 @@ public class Card implements Attackable, Comparable<Card> {
 
     @Override
     public void damage(int amount) {
+        if (amount < 0) { // Defensive programming
+            throw new IllegalArgumentException("Damage amount must be positive.");
+        }
         this.health -= amount;
     }
 

@@ -29,6 +29,8 @@ import cis2039.pocketbeasts.utils.Config;
 public class Player implements Attackable {
 
     private String name;
+    private int id;
+    private static int nextId = 1;
     private int health;
     private final int MAX_MANA;
     private int manaAvailable;
@@ -42,6 +44,7 @@ public class Player implements Attackable {
 
     public Player(String name) {
         this.name = name;
+        this.id = nextId++;
         this.health = Config.INITIAL_HEALTH;
         this.MAX_MANA = Config.MAX_MANA;
         this.manaAvailable = 0;
@@ -53,6 +56,10 @@ public class Player implements Attackable {
 
     public String getName() {
         return this.name;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getHealth() {
@@ -112,6 +119,9 @@ public class Player implements Attackable {
 
     @Override
     public void damage(int amount) {
+        if (amount < 0) { // Defensive programming
+            throw new IllegalArgumentException("Damage amount must be positive.");
+        }
         this.health -= amount;
     }
 
