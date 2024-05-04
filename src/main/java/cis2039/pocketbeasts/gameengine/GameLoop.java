@@ -3,6 +3,7 @@ package cis2039.pocketbeasts.gameengine;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Game;
 import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.utils.Config;
 import cis2039.pocketbeasts.utils.InputHandler;
 
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import java.util.List;
 public class GameLoop {
     private final Game game;
     private boolean isRunning;
-    private InputHandler inputHandler;
-    private ArrayList<Player> players;
+    private final InputHandler inputHandler;
+    private final ArrayList<Player> players;
 
     /**
      * Creates a new game loop.
@@ -28,36 +29,39 @@ public class GameLoop {
 
     /**
      * Starts the game loop.
+     *
      * @throws IllegalArgumentException if there are no players in the game
      */
     public void start() {
-        if (game.getPlayers().isEmpty()){ // Defensive programming
+        if (game.getPlayers().isEmpty()) { // Defensive programming
             throw new IllegalArgumentException("At least one player is required.");
         }
 
-        String winningMessage = "";
+        String message = "";
         while (this.isRunning) {
-            for (Player player : players) {
+            List<Player> playersCopy = new ArrayList<>(players);
+            for (Player player : playersCopy) {
+                if (player.isDead()){ // Skip dead players
+                    continue;
+                }
+
+                if (player.getDeck().isEmpty()) { // Check for fatigue damage, this happens inside game.startTurn()
+                    System.out.println(player.getName() + "'s deck is empty, they have taken " + Config.FATIGUE_DAMAGE + " fatigue damage.");
+                }
+
                 // Add mana and draw card
-                // TODO BUG: this throws an error when the player's deck is empty
                 game.startTurn(player);
 
-                // HACK assumes only one other player
-                Player otherPlayer = null;
-                for (Player iPlayer : players) {
-                    if (iPlayer != player) {
-                        otherPlayer = iPlayer;
-                    }
-                }
-                if (otherPlayer == null) {
-                    winningMessage = "Something has gone terribly wrong...";
-                    this.stop();
-                    break;
-                }
+                checkAndRemoveDeadPlayer(player);
+                checkForWinner();
+
+
+                // Create inPlay copy
+                List<Card> playerInPlayCopy = new ArrayList<>(player.getInPlay().getCards());
 
                 // Cycle through cards in play to attack
-                for (Card card : player.getInPlay().getCards()) {
-                    int index = 0;
+                for (Card card : playerInPlayCopy) {
+                    Game.removeDeadCards(players);
                     System.out.println(card.toString());
                     if (inputHandler.attackWithCardPrompt(player.getName(), card.getName())) {
 
@@ -67,25 +71,30 @@ public class GameLoop {
                         // Get target player's ID
                         int targetPlayerId = inputHandler.attackWhichPlayerPrompt(otherPlayers);
 
-                        for (Player iOtherPlayer : otherPlayers) {
-                            if (targetPlayerId == iOtherPlayer.getId()) {
-                                otherPlayer = iOtherPlayer;
-                            }
+                        // Get target player
+                        Player targetPlayer = players.stream()
+                                .filter(p -> p.getId() == targetPlayerId)
+                                .findFirst()
+                                .orElse(null);
+                        if (targetPlayer == null) {
+                            System.out.println("Invalid player chosen.");
+                            continue;
                         }
 
-
-                        int target = inputHandler.getAttackChoicePrompt(otherPlayer, card);
+                        // Attack player or card
+                        int target = inputHandler.getAttackChoicePrompt(targetPlayer, card);
                         if (target == 1) { // Player
-                            Game.attackWithCard(card, otherPlayer);
-                            if (otherPlayer.isDead()) {
-                                // if true returned players health <= 0
-                                winningMessage = player.getName() + " wins!";
-                                this.stop();
+                            Game.attackWithCard(card, targetPlayer);
+                            checkAndRemoveDeadPlayer(targetPlayer);
+                            checkForWinner();
+                            if (!this.isRunning) {
                                 break;
                             }
-                            System.out.println(otherPlayer.getName() + " is now at " + otherPlayer.getHealth());
+                            if (!targetPlayer.isDead()) {
+                                System.out.println(targetPlayer.getName() + " is now at " + targetPlayer.getHealth() + " HP.");
+                            }
                         } else { // Beast, index is `target-2`
-                            Card targetCard = otherPlayer.getInPlay().getCard(target - 2);
+                            Card targetCard = targetPlayer.getInPlay().getCard(target - 2);
                             targetCard.damage(card.getAttack());
                             card.damage(targetCard.getAttack());
                         }
@@ -96,11 +105,10 @@ public class GameLoop {
                     break;
                 }
 
+
                 // Cycle through cards in play remove "dead" cards (health <= 0)
-                // TODO BUG: this is not removing the card from the other player's inPlay during the attack phase
                 Game.removeDeadCards(players);
 
-                // create copy
                 List<Card> playerHandCopy = new ArrayList<>(player.getHand().getCards());
 
                 // Play cards from hand
@@ -110,20 +118,17 @@ public class GameLoop {
 
                         if (inputHandler.playCardPrompt(player.getName(), card.getName())) {
                             game.playCardFromHand(player, card);
-                        } else {
-                            // Handle empty deck
-                            System.out.println("No cards left in the deck.");
                         }
                     }
                 }
 
                 // Print final play state
-                System.out.println("\n".repeat(16));
                 System.out.println(player);
+                System.out.println("\n".repeat(6));
             }
         }
 
-        System.out.println(winningMessage);
+        System.out.println(message);
 
     }
 
@@ -145,5 +150,28 @@ public class GameLoop {
         return this.isRunning;
     }
 
-    //
+    /**
+     * Checks for a winner.
+     * <p>
+     * If there is only one player left in the game, they are declared the winner.
+     */
+    private void checkForWinner() {
+        if (game.getPlayers().size() <= 1) {
+            game.getPlayers().forEach(p -> System.out.println(p.getName() + " is the winner!"));
+            this.stop();
+        }
+    }
+
+    /**
+     * Removes a dead player from the game.
+     *
+     * @param player The player to remove.
+     */
+    private void checkAndRemoveDeadPlayer(Player player){
+        if (player.isDead()) {
+            System.out.println(player.getName() + " is defeated!");
+            game.removePlayer(player);
+        }
+    }
+
 }
