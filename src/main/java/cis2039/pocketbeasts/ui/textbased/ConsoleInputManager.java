@@ -4,16 +4,17 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import cis2039.pocketbeasts.interfaces.InputManager;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Player;
 
 /**
  * Handles user input for the text-based interface.
  * <p>
- * The InputHandler class is responsible for handling user input in the text-based interface.
+ * The ConsoleInputManager class is responsible for handling user input in the text-based interface.
  * It prompts the user for input and validates the response.
  * It also contains methods for prompting the user to play cards and attack.
- * The InputHandler class is used by the GameManager class to handle user input.
+ * The ConsoleInputManager class is used by the GameManager class to handle user input.
  * </p>
  *
  * @author Rhys Kemp
@@ -21,14 +22,14 @@ import cis2039.pocketbeasts.models.Player;
  * @see Player
  * @see cis2039.pocketbeasts.gameengine.GameManager
  */
-public class InputHandler {
+public class ConsoleInputManager implements InputManager {
 
     public Scanner scanner;
 
     /**
-     * Constructor for the InputHandler class.
+     * Constructor for the ConsoleInputManager class.
      */
-    public InputHandler() {
+    public ConsoleInputManager() {
         this.scanner = new Scanner(System.in);
     }
 
@@ -56,7 +57,8 @@ public class InputHandler {
      * @param prompt The prompt to display to the user.
      * @return The user's response.
      */
-    private boolean yesNoPrompt(String prompt) {
+    @Override
+    public boolean yesNoPrompt(String prompt) {
         String response = getPrompt(prompt, new String[]{"Yes", "yes", "y", "No", "no", "n"});
         return response.equals("Yes") || response.equals("yes") || response.equals("y");
     }
@@ -68,8 +70,9 @@ public class InputHandler {
      * @param card   The card being played.
      * @return Boolean - Whether the card should be played.
      */
-    public boolean playCardPrompt(String player, String card) {
-        return yesNoPrompt(player + " play " + card + "? (Yes/No) ");
+    @Override
+    public boolean playCardPrompt(Player player, Card card) {
+        return yesNoPrompt(player.getName() + " play " + card.getName() + "? (Yes/No) ");
     }
 
     /**
@@ -79,8 +82,9 @@ public class InputHandler {
      * @param card   The card being used to attack.
      * @return Boolean - Whether the card should be used to attack.
      */
-    public boolean attackWithCardPrompt(String player, String card) {
-        return yesNoPrompt(player + " attack with " + card + "? (Yes/No) ");
+    @Override
+    public boolean attackWithCardPrompt(Player player, Card card) {
+        return yesNoPrompt(player.getName() + " attack with " + card.getName() + "? (Yes/No) ");
     }
 
     /**
@@ -89,6 +93,7 @@ public class InputHandler {
      * @param players The players to choose from.
      * @return Int id - The ID of the player to attack.
      */
+    @Override
     public int attackWhichPlayerPrompt(ArrayList<Player> players) {
         System.out.println("Who would you like to attack?");
 
@@ -116,6 +121,7 @@ public class InputHandler {
      * @param attackingCard The card being used to attack.
      * @return Int id - The ID of the target to attack.
      */
+    @Override
     public int getAttackChoicePrompt(Player player, Card attackingCard) {
         System.out.println("Attacking with: " + attackingCard.getName() + "    " + attackingCard.getHealth() + "HP | " + attackingCard.getAttack() + "ATK");
         System.out.println("What would you like to attack?");
@@ -137,7 +143,8 @@ public class InputHandler {
     /**
      * Waits for the user to press ENTER.
      */
-    public void waitForInput() {
+    @Override
+    public void waitForOkay() {
         System.out.println("Press ENTER to continue...");
         this.scanner.nextLine();
     }

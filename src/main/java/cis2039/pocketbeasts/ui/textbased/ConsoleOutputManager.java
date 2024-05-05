@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.ui.textbased;
 
+import cis2039.pocketbeasts.interfaces.OutputManager;
 import cis2039.pocketbeasts.models.Player;
 import cis2039.pocketbeasts.utils.Config;
 
@@ -11,15 +12,17 @@ import cis2039.pocketbeasts.utils.Config;
  * It is used by the GameManager class to print messages to the console.
  * </p>
  *
+ * @author Rhys Kemp
  * @see cis2039.pocketbeasts.gameengine.GameManager
  * @see cis2039.pocketbeasts.models.Player
  * @see cis2039.pocketbeasts.utils.Config
  */
-public class ConsoleOutputManager {
+public class ConsoleOutputManager implements OutputManager {
+
     /**
      * Prints a welcome message to the console.
      */
-    public void printWelcomeMessage() {
+    public void welcomeMessage() {
         System.out.println();
         System.out.println("-+-+-+-+-+-+-+-+-+-+-+-+");
         System.out.println("Welcome to PocketBeasts!");
@@ -51,12 +54,18 @@ public class ConsoleOutputManager {
         System.out.println();
     }
 
+    @Override
+    public void displayPlayerTurn(Player player) {
+        System.out.println(player.getName() + "'s turn.");
+    }
+
     /**
      * Prints a message to the console indicating the player has taken fatigue damage if their deck is empty.
      *
      * @param player The current player.
      */
-    public void takenFatigueDamage(Player player) {
+    @Override
+    public void displayFatigueDamage(Player player) {
         if (player.getDeck().isEmpty()) { // Check for fatigue damage, this happens inside game.startTurn()
             System.out.println(player.getName() + "'s deck is empty, they have taken " + Config.FATIGUE_DAMAGE + " fatigue damage.");
         }
@@ -67,7 +76,8 @@ public class ConsoleOutputManager {
      *
      * @param player The current player.
      */
-    public void printPlayerHealth(Player player) {
+    @Override
+    public void displayPlayerHealth(Player player) {
         if (!player.isDead()) {
             System.out.println(player.getName() + " is now at " + player.getHealth() + " HP.");
         }
@@ -78,7 +88,8 @@ public class ConsoleOutputManager {
      *
      * @param player The player who has won the game.
      */
-    public void printWinner(Player player) {
+    @Override
+    public void displayWinner(Player player) {
         System.out.println(player.getName() + " has won the game!");
     }
 
@@ -87,7 +98,8 @@ public class ConsoleOutputManager {
      *
      * @param player The player who has been defeated.
      */
-    public void printDefeated(Player player) {
+    @Override
+    public void displayDefeated(Player player) {
         System.out.println(player.getName() + " has been defeated.");
     }
 
@@ -96,7 +108,8 @@ public class ConsoleOutputManager {
      *
      * @param player The player to print the final play state of.
      */
-    public void printFinalPlayState(Player player) {
+    @Override
+    public void displayFinalPlayState(Player player) {
         System.out.println(player);
         System.out.println("\n".repeat(6));
     }

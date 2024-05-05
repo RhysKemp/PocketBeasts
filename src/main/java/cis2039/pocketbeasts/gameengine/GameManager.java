@@ -1,10 +1,12 @@
 package cis2039.pocketbeasts.gameengine;
 
+import cis2039.pocketbeasts.interfaces.InputManager;
+import cis2039.pocketbeasts.interfaces.OutputManager;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Game;
 import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.ui.textbased.ConsoleInputManager;
 import cis2039.pocketbeasts.ui.textbased.ConsoleOutputManager;
-import cis2039.pocketbeasts.ui.textbased.InputHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,31 +19,59 @@ import java.util.List;
  * It also checks for a winner and removes defeated players from the game.
  * The game loop can be run in text-based mode.
  * </p>
+ *
+ * @author Rhys Kemp
  * @see Game
  * @see Player
  * @see Card
- * @see InputHandler
+ * @see InputManager
+ * @see OutputManager
+ * @see ConsoleInputManager
  * @see ConsoleOutputManager
- *
- * @author Rhys Kemp
  */
 public class GameManager {
     private final Game game;
     private boolean isRunning;
-    private final InputHandler inputHandler;
-    private final ConsoleOutputManager consoleOutputManager;
+    private final InputManager inputManager;
+    private final OutputManager outputManager;
     private final ArrayList<Player> players;
 
+
     /**
-     * Creates a new game loop.
+     * Default constructor for the GameManager class.
+     * <p>
+     * This constructor creates a new GameManager object with default text-based input and output.
+     * It sets the game to loop and the output and input managers to ConsoleOutputManager and ConsoleInputManager respectively.
+     * The players list is set to the players in the game.
+     * The game loop is started by calling the {@link #start() start} method.
+     * The game loop is halted by calling the {@link #stop() stop} method.
+     * </p>
      *
      * @param game The game to loop.
      */
     public GameManager(Game game) {
+        this(game, new ConsoleOutputManager(), new ConsoleInputManager());
+    }
+
+    /**
+     * Overloaded Constructor for the GameManager class.
+     * <p>
+     * This constructor creates a new GameManager object.
+     * It sets the game to loop and the output and input managers to use.
+     * The players list is set to the players in the game.
+     * The game loop is started by calling the {@link #start() start} method.
+     * The game loop is halted by calling the {@link #stop() stop} method.
+     * </p>
+     *
+     * @param game          The game to loop.
+     * @param outputManager The output manager to use.
+     * @param inputManager  The input manager to use.
+     */
+    public GameManager(Game game, OutputManager outputManager, InputManager inputManager) {
         this.game = game;
         this.isRunning = true;
-        this.inputHandler = new InputHandler();
-        this.consoleOutputManager = new ConsoleOutputManager();
+        this.inputManager = inputManager;
+        this.outputManager = outputManager;
         this.players = game.getPlayers();
     }
 
@@ -50,36 +80,16 @@ public class GameManager {
      *
      * @throws IllegalArgumentException if there are no players in the game
      */
-    public void startTextBased() {
+    public void start() {
         if (game.getPlayers().isEmpty()) { // Defensive programming
             throw new IllegalArgumentException("At least one player is required.");
         }
-        consoleOutputManager.printWelcomeMessage();
-        inputHandler.waitForInput();
+        outputManager.welcomeMessage();
+        inputManager.waitForOkay();
 
-        while (this.isRunning) {
-            List<Player> playersCopy = new ArrayList<>(players);
-            for (Player player : playersCopy) {
-                if (checkForWinner()) {
-                    consoleOutputManager.printWinner(players.get(0));
-                    break;
-                }
-                if (player.isDead()) {
-                    continue;
-                }
-                consoleOutputManager.takenFatigueDamage(player);
-                game.startTurn(player);
-                if (checkForDeadPlayer(player)) {
-                    consoleOutputManager.printDefeated(player);
-                    continue;
-                }
-                cardAttacks(player);
-                if (checkForWinner()) {
-                    consoleOutputManager.printWinner(players.get(0));
-                    break;
-                }
-                cardPlays(player);
-                consoleOutputManager.printFinalPlayState(player);
+        while (isRunning()) {
+            for (Player player : new ArrayList<>(players)) {
+                playTurn(player);
             }
         }
     }
@@ -140,10 +150,10 @@ public class GameManager {
             if (checkForWinner()) {
                 break;
             }
-            if (inputHandler.attackWithCardPrompt(player.getName(), card.getName())) {
+            if (inputManager.attackWithCardPrompt(player, card)) {
                 ArrayList<Player> otherPlayers = new ArrayList<>(players);
                 otherPlayers.remove(player);
-                int targetPlayerId = inputHandler.attackWhichPlayerPrompt(otherPlayers);
+                int targetPlayerId = inputManager.attackWhichPlayerPrompt(otherPlayers);
                 Player targetPlayer = players.stream()
                         .filter(p -> p.getId() == targetPlayerId)
                         .findFirst()
@@ -153,7 +163,7 @@ public class GameManager {
                     System.out.println("Invalid player chosen.");
                     continue;
                 }
-                int target = inputHandler.getAttackChoicePrompt(targetPlayer, card);
+                int target = inputManager.getAttackChoicePrompt(targetPlayer, card);
                 if (target == 1) {
                     Game.attackWithCard(card, targetPlayer);
                     checkForDeadPlayer(targetPlayer);
@@ -179,12 +189,60 @@ public class GameManager {
         List<Card> playerHandCopy = new ArrayList<>(player.getHand().getCards());
         for (Card card : playerHandCopy) {
             if (card.getManaCost() <= player.getManaAvailable()) {
-                if (inputHandler.playCardPrompt(player.getName(), card.getName())) {
+                if (inputManager.playCardPrompt(player, card)) {
                     game.playCardFromHand(player, card);
                 }
             }
         }
     }
 
+    /**
+     * Plays a turn for a player.
+     * <p>
+     * This method plays a turn for a player.
+     * It checks for a winner and removes defeated players from the game.
+     * It also checks for dead players and displays the final play state.
+     * If there is a winner, the game is stopped.
+     * If the player is dead, the turn is skipped.
+     * If the player is not dead, the player is prompted to play cards and attack.
+     *
+     * @param player The player to play a turn for.
+     * @see #checkForWinner()
+     * @see #checkForDeadPlayer(Player)
+     * @see #cardAttacks(Player)
+     * @see #cardPlays(Player)
+     * @see #stop()
+     * @see #isRunning()
+     */
+    private void playTurn(Player player) {
+        if (checkForWinner()) {
+            outputManager.displayWinner(players.get(0));
+            stop();
+            return;
+        }
+
+        if (player.isDead()) {
+            return;
+        }
+
+        outputManager.displayFatigueDamage(player);
+        game.startTurn(player);
+
+        if (checkForDeadPlayer(player)) {
+            outputManager.displayDefeated(player);
+            return;
+        }
+
+        cardAttacks(player);
+
+        if (checkForWinner()) {
+            outputManager.displayWinner(players.get(0));
+            stop();
+            return;
+        }
+
+        cardPlays(player);
+        outputManager.displayFinalPlayState(player);
+    }
 
 }

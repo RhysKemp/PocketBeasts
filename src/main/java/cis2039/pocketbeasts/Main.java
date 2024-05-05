@@ -22,7 +22,6 @@ import cis2039.pocketbeasts.models.Game;
 import cis2039.pocketbeasts.models.Player;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  *
@@ -35,12 +34,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        System.out.println("Press ENTER to continue...");
-        Scanner sc = new Scanner(System.in);
-        sc.nextLine();
-
-
 
         // Initialise game and populate with players
         PlayerManager playerManager = new PlayerManager("Steve", "Chris", "Rhys");
@@ -51,9 +44,9 @@ public class Main {
         game.addPlayers(players);
         game.newGame();
 
-        // Start game loop
+        // Start game loop in text-based mode
         GameManager gameManager = new GameManager(game);
-        gameManager.startTextBased();
+        gameManager.start();
 
     }
 }
