@@ -16,6 +16,8 @@
  */
 package cis2039.pocketbeasts.models;
 
+import cis2039.pocketbeasts.abstracts.AbstractCardGroup;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -28,35 +30,39 @@ import java.util.Collections;
  * @see Card
  * @see Player
  */
-public class Deck {
-    
-    private final ArrayList<Card> cards;
-    
+public class Deck extends AbstractCardGroup {
+
+    /**
+     * Constructor for the Deck class.
+     *
+     * @param cards ArrayList<Card> - The cards to add to the deck.
+     */
     public Deck(ArrayList<Card> cards) {
-        this.cards = cards;
+        this.cards.addAll(cards);
     }
-    
-    public int count() {
-        return this.cards.size();
-    }
-    
+
+
+    /**
+     * Draws a card from the deck.
+     *
+     * @return Card - The card drawn from the deck.
+     * @throws IllegalStateException if the deck is empty.
+     */
     public Card draw() {
+        if (this.cards.isEmpty()) {
+            throw new IllegalStateException("The deck is empty.");
+        }
         Card card = this.cards.get(0);
         this.cards.remove(0);
         return card;
     }
-    
+
+    /**
+     * Shuffles the deck.
+     */
     public void shuffle() {
         Collections.shuffle(this.cards);
     }
 
-    /**
-     * Checks if the deck is empty.
-     *
-     * @return Boolean - True if the deck is empty, false otherwise.
-     */
-    public boolean isEmpty() {
-        return this.cards.isEmpty();
-    }
 
 }

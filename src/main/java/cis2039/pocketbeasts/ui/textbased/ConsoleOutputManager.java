@@ -66,9 +66,7 @@ public class ConsoleOutputManager implements OutputManager {
      */
     @Override
     public void displayFatigueDamage(Player player) {
-        if (player.getDeck().isEmpty()) { // Check for fatigue damage, this happens inside game.startTurn()
-            System.out.println(player.getName() + "'s deck is empty, they have taken " + Config.FATIGUE_DAMAGE + " fatigue damage.");
-        }
+        System.out.println(player.getName() + "'s deck is empty, they have taken " + Config.FATIGUE_DAMAGE + " fatigue damage.");
     }
 
     /**
@@ -81,6 +79,16 @@ public class ConsoleOutputManager implements OutputManager {
         if (!player.isDead()) {
             System.out.println(player.getName() + " is now at " + player.getHealth() + " HP.");
         }
+    }
+
+    /**
+     * Prints the current player to the console
+     *
+     * @param player The player whose play state to display.
+     */
+    @Override
+    public void displayPlayer(Player player) {
+        System.out.println(player);
     }
 
     /**

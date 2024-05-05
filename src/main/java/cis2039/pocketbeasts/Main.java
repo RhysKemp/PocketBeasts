@@ -20,6 +20,8 @@ import cis2039.pocketbeasts.gameengine.GameManager;
 import cis2039.pocketbeasts.gameengine.PlayerManager;
 import cis2039.pocketbeasts.models.Game;
 import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.ui.textbased.ConsoleInputManager;
+import cis2039.pocketbeasts.ui.textbased.ConsoleOutputManager;
 
 import java.util.ArrayList;
 
@@ -35,8 +37,10 @@ public class Main {
      */
     public static void main(String[] args) {
 
+        // SEE README.md FOR INSTRUCTIONS ON HOW TO RUN & TEST THE APPLICATION
+
         // Initialise game and populate with players
-        PlayerManager playerManager = new PlayerManager("Steve", "Chris", "Rhys");
+        PlayerManager playerManager = new PlayerManager("Steve", "Chris");
         ArrayList<Player> players = playerManager.getPlayers();
 
         // Start game
@@ -45,7 +49,9 @@ public class Main {
         game.newGame();
 
         // Start game loop in text-based mode
-        GameManager gameManager = new GameManager(game);
+        ConsoleOutputManager consoleOutputManager = new ConsoleOutputManager();
+        ConsoleInputManager consoleInputManager = new ConsoleInputManager();
+        GameManager gameManager = new GameManager(game, consoleOutputManager, consoleInputManager);
         gameManager.start();
 
     }

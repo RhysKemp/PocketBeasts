@@ -25,8 +25,6 @@ public class Game {
         this.players = new ArrayList<>();
     }
 
-    // PLAYER METHODS
-
     /**
      * Adds a player to the game.
      *
@@ -43,10 +41,6 @@ public class Game {
      */
     public void addPlayers(ArrayList<Player> players) {
         this.players.addAll(players);
-        for (Player player : players) {
-            System.out.println(player);
-        }
-
     }
 
     /**
@@ -85,8 +79,6 @@ public class Game {
         player.addMana();
     }
 
-    // GAME AND TURN METHODS
-
     /**
      * Starts a new game.
      * Shuffles the deck and deals {@value Config#INITIAL_HAND_SIZE} cards to each player.
@@ -110,15 +102,9 @@ public class Game {
         // Check if the deck is not empty before drawing a card
         if (!player.getDeck().isEmpty()) {
             drawCard(player);
-        } else {
-            // Design Choice - fatigue damage if deck is empty - Maybe change if other mechanics added.
-            player.damage(Config.FATIGUE_DAMAGE);
         }
         regenMana(player);
-        System.out.println(player);
     }
-
-    // CARD METHODS
 
     /**
      * Draws a card for a player.
@@ -172,57 +158,18 @@ public class Game {
         }
     }
 
+    /**
+     * Damage a player with fatigue damage if their deck is empty.
+     *
+     * @param player The player to damage.
+     * @return Boolean - Whether the player took fatigue damage.
+     */
+    public boolean fatigueDamage(Player player) {
+        if (player.getDeck().isEmpty()) {
+            player.damage(Config.FATIGUE_DAMAGE);
+            return true;
+        }
+        return false;
+    }
 
-//    TODO - Implement this method and show the game state in the console
-//    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(String.format("%-9s HEALTH/%-5d MANA/%d\n", player.getName(), player.getHealth(), this.manaAvailable));
-//
-//        for (int i=0; i<player.getInPlay().count()+2; i++) {
-//            sb.append("+-------+ ");
-//        }
-//        sb.append("\n");
-//
-//        for (int i=0; i<2; i++) {
-//            sb.append("|       | ");
-//        }
-//        for (int i=0; i<player.getInPlay().count(); i++) {
-//            sb.append(String.format("|%7d| ", player.getInPlay().getCard(i).getManaCost()));
-//        }
-//        sb.append("\n");
-//
-//        sb.append("| DECK  | ");
-//        sb.append("| GRAVE | ");
-//        for (int i=0; i<player.getInPlay().count(); i++) {
-//            sb.append(String.format("|  %-5s| ", player.getInPlay().getCard(i).getId()));
-//        }
-//        sb.append("\n");
-//
-//        sb.append(String.format("| %-6d| ", this.deck.count()));
-//        sb.append(String.format("| %-6d| ", player.getGraveyard().count()));
-//        for (int i=0; i<player.getInPlay().count(); i++) {
-//            sb.append("|       | ");
-//        }
-//        sb.append("\n");
-//
-//        for (int i=0; i<2; i++) {
-//            sb.append("|       | ");
-//        }
-//        for (int i=0; i<player.getInPlay().count(); i++) {
-//            sb.append(String.format("|%-2d %4d| ", player.getInPlay().getCard(i).getAttack(), player.getInPlay().getCard(i).getHealth()));
-//        }
-//        sb.append("\n");
-//
-//        for (int i=0; i<player.getInPlay().count()+2; i++) {
-//            sb.append("+-------+ ");
-//        }
-//        sb.append("\n");
-//        sb.append(String.format("%d card(s) in hand.\n", player.getHand().count()));
-//        sb.append("\n");
-//
-//        sb.append(player.getHand().toString());
-//
-//        return sb.toString();
-//    }
 }

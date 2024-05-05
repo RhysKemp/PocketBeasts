@@ -1,12 +1,12 @@
 package cis2039.pocketbeasts.ui.textbased;
 
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.ArrayList;
-
 import cis2039.pocketbeasts.interfaces.InputManager;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Handles user input for the text-based interface.

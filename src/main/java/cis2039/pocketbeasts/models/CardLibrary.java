@@ -10,6 +10,8 @@ package cis2039.pocketbeasts.models;
  * a name, a cost, an attack value, and a health value.
  * <p>
  * The cards in the library are static and cannot be modified.
+ * <p>
+ * {@code STARTER_CARDS} is a list of cards that players start with.
  *
  * @see Card
  * @see Deck

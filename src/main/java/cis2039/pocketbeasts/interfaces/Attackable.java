@@ -15,4 +15,11 @@ public interface Attackable {
      * @return Boolean - true if the object is dead, false otherwise
      */
     boolean isDead();
+
+    /**
+     * Get the object's current health
+     *
+     * @return Int health - the object's current health
+     */
+    int getHealth();
 }

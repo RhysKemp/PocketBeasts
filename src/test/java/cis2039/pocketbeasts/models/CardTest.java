@@ -4,16 +4,14 @@
  */
 package cis2039.pocketbeasts.models;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
  * @author Steven Mead
+ * @author Rhy Kemp
  */
 public class CardTest {
     
@@ -42,12 +40,16 @@ public class CardTest {
     @Test
     public void testGetId() {
         System.out.println("getId");
-        Card instance = null;
-        String expResult = "";
-        String result = instance.getId();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Card instance = new Card("id", "name", 1, 2, 3);
+        String expResult = "id";
+        try {
+            String result = instance.getId();
+            assertEquals(expResult, result);
+            System.out.println("getId: Test 1 passed");
+        } catch (AssertionError e) {
+            System.out.println("getId: Test 1 failed");
+            throw e;
+        }
     }
 
     /**
@@ -56,12 +58,16 @@ public class CardTest {
     @Test
     public void testGetName() {
         System.out.println("getName");
-        Card instance = null;
-        String expResult = "";
-        String result = instance.getName();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Card instance = new Card("id", "name", 1, 2, 3);
+        String expResult = "name";
+        try {
+            String result = instance.getName();
+            assertEquals(expResult, result);
+            System.out.println("getName: Test 1 passed");
+        } catch (AssertionError e) {
+            System.out.println("getName: Test 1 failed");
+            throw e;
+        }
     }
 
     /**
@@ -70,12 +76,16 @@ public class CardTest {
     @Test
     public void testGetManaCost() {
         System.out.println("getManaCost");
-        Card instance = null;
-        int expResult = 0;
-        int result = instance.getManaCost();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Card instance = new Card("id", "name", 1, 2, 3);
+        int expResult = 1;
+        try {
+            int result = instance.getManaCost();
+            assertEquals(expResult, result);
+            System.out.println("getManaCost: Test 1 passed");
+        } catch (AssertionError e) {
+            System.out.println("getManaCost: Test 1 failed");
+            throw e;
+        }
     }
 
     /**
@@ -84,12 +94,16 @@ public class CardTest {
     @Test
     public void testGetAttack() {
         System.out.println("getAttack");
-        Card instance = null;
-        int expResult = 0;
-        int result = instance.getAttack();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Card instance = new Card("id", "name", 1, 2, 3);
+        int expResult = 2;
+        try {
+            int result = instance.getAttack();
+            assertEquals(expResult, result);
+            System.out.println("getAttack: Test 1 passed");
+        } catch (AssertionError e) {
+            System.out.println("getAttack: Test 1 failed");
+            throw e;
+        }
     }
 
     /**
@@ -98,12 +112,16 @@ public class CardTest {
     @Test
     public void testGetHealth() {
         System.out.println("getHealth");
-        Card instance = null;
-        int expResult = 0;
-        int result = instance.getHealth();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Card instance = new Card("id", "name", 1, 2, 3);
+        int expResult = 3;
+        try {
+            int result = instance.getHealth();
+            assertEquals(expResult, result);
+            System.out.println("getHealth: Test 1 passed");
+        } catch (AssertionError e) {
+            System.out.println("getHealth: Test 1 failed");
+            throw e;
+        }
     }
 
     /**
@@ -112,11 +130,16 @@ public class CardTest {
     @Test
     public void testDamage() {
         System.out.println("damage");
-        int amount = 0;
-        Card instance = null;
-        instance.damage(amount);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Card instance = new Card("id", "name", 1, 2, 3);
+        int amount = 1;
+        int expResult = 2;
+        try {
+            instance.damage(amount);
+            assertEquals(expResult, instance.getHealth());
+        } catch (AssertionError e) {
+            System.out.println("damage: Test 1 failed");
+            throw e;
+        }
     }
 
     /**
@@ -125,12 +148,17 @@ public class CardTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        Card instance = null;
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Card instance = new Card("id", "name", 1, 2, 3);
+        String expResult = "name (id) Mana Cost/1 Attack/2 Health/3";
+        try {
+            String result = instance.toString();
+            assertEquals(expResult, result);
+            System.out.println("toString: Test 1 passed");
+        } catch (AssertionError e) {
+            System.out.println("toString: Test 1 failed");
+            throw e;
+        }
+
     }
 
     /**
@@ -139,13 +167,17 @@ public class CardTest {
     @Test
     public void testCompareTo() {
         System.out.println("compareTo");
-        Card o = null;
-        Card instance = null;
+        Card o = new Card("id2", "name", 1, 2, 3);
+        Card instance = new Card("id", "name", 1, 2, 3);
         int expResult = 0;
-        int result = instance.compareTo(o);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            int result = instance.compareTo(o);
+            assertEquals(expResult, result);
+            System.out.println("compareTo: Test 1 passed");
+        } catch (AssertionError e) {
+            System.out.println("compareTo: Test 1 failed");
+            throw e;
+        }
     }
     
 }

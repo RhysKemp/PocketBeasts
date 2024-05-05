@@ -38,30 +38,13 @@ public class GameManager {
 
 
     /**
-     * Default constructor for the GameManager class.
+     * Constructor for the GameManager class.
      * <p>
-     * This constructor creates a new GameManager object with default text-based input and output.
-     * It sets the game to loop and the output and input managers to ConsoleOutputManager and ConsoleInputManager respectively.
+     * This constructor creates a new GameManager object,
+     * it sets the game to loop and the output and input managers to use.
      * The players list is set to the players in the game.
-     * The game loop is started by calling the {@link #start() start} method.
-     * The game loop is halted by calling the {@link #stop() stop} method.
-     * </p>
-     *
-     * @param game The game to loop.
-     */
-    public GameManager(Game game) {
-        this(game, new ConsoleOutputManager(), new ConsoleInputManager());
-    }
-
-    /**
-     * Overloaded Constructor for the GameManager class.
-     * <p>
-     * This constructor creates a new GameManager object.
-     * It sets the game to loop and the output and input managers to use.
-     * The players list is set to the players in the game.
-     * The game loop is started by calling the {@link #start() start} method.
-     * The game loop is halted by calling the {@link #stop() stop} method.
-     * </p>
+     * The game loop is started by calling the {@link #start() start} method
+     * and the game loop is halted by calling the {@link #stop() stop} method.
      *
      * @param game          The game to loop.
      * @param outputManager The output manager to use.
@@ -76,7 +59,13 @@ public class GameManager {
     }
 
     /**
-     * Starts the game in text-based mode.
+     * Starts the game
+     * <p>
+     * This method starts the game loop.
+     * It displays a welcome message and waits for the user to press enter.
+     * It then loops through the players in the game, allowing each player to take a turn.
+     * The game loop is stopped when there is only one player left in the game.
+     * If there are no players in the game, an exception is thrown.
      *
      * @throws IllegalArgumentException if there are no players in the game
      */
@@ -141,6 +130,10 @@ public class GameManager {
 
     /**
      * Allows a player to attack with cards in play.
+     * <p>
+     * This method allows a player to attack with cards in play.
+     * It prompts the player to attack with a card.
+     * If the player chooses to attack with a card, they are prompted to choose a target.
      *
      * @param player The player to attack with cards.
      */
@@ -182,6 +175,9 @@ public class GameManager {
 
     /**
      * Allows a player to play cards from their hand.
+     * <p>
+     * This method allows a player to play cards from their hand.
+     * It prompts the player to play a card.
      *
      * @param player The player to play cards from.
      */
@@ -222,11 +218,17 @@ public class GameManager {
         }
 
         if (player.isDead()) {
+            outputManager.displayDefeated(player);
+            game.removePlayer(player);
             return;
         }
 
-        outputManager.displayFatigueDamage(player);
+        if (game.fatigueDamage(player)) {
+            outputManager.displayFatigueDamage(player);
+        }
+        outputManager.displayPlayerTurn(player);
         game.startTurn(player);
+        outputManager.displayPlayer(player);
 
         if (checkForDeadPlayer(player)) {
             outputManager.displayDefeated(player);
@@ -236,7 +238,6 @@ public class GameManager {
         cardAttacks(player);
 
         if (checkForWinner()) {
-            outputManager.displayWinner(players.get(0));
             stop();
             return;
         }

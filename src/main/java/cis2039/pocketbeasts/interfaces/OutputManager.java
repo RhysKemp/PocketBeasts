@@ -43,6 +43,13 @@ public interface OutputManager {
     void displayPlayerHealth(Player player);
 
     /**
+     * Displays the player's play state to the user.
+     *
+     * @param player The player whose play state to display.
+     */
+    void displayPlayer(Player player);
+
+    /**
      * Displays a message to the user indicating that the player has won the game.
      *
      * @param player The player who has won the game.
@@ -62,4 +69,5 @@ public interface OutputManager {
      * @param player The player whose final play state to display.
      */
     void displayFinalPlayState(Player player);
+
 }

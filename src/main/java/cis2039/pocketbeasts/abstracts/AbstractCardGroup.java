@@ -71,4 +71,13 @@ public abstract class AbstractCardGroup {
         return this.cards.size();
     }
 
+    /**
+     * Checks if the deck is empty.
+     *
+     * @return Boolean - True if the deck is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        return this.cards.isEmpty();
+    }
+
 }

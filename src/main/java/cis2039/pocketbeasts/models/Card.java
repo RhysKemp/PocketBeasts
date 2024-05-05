@@ -81,6 +81,12 @@ public class Card implements Attackable, Comparable<Card> {
         return this.attack;
     }
 
+    /**
+     * Sets the card's health value.
+     *
+     * @return int health - The card's new health value.
+     */
+    @Override
     public int getHealth() {
         return this.health;
     }

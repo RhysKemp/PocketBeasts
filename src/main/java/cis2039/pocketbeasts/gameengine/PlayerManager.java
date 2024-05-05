@@ -8,10 +8,13 @@ import cis2039.pocketbeasts.models.Player;
 import java.util.ArrayList;
 
 /**
- * Initialises a new game with the given players.
+ * PlayerManager class
+ * <p>
+ * The PlayerManager class is responsible for managing the players in the game.
+ * It initialises the game with the given players and assigns each player a starter deck of cards.
+ * </p>
  *
  * @author Rhys Kemp
- *
  * @see Player
  * @see Deck
  * @see Card
@@ -53,6 +56,16 @@ public class PlayerManager {
     }
 
     /**
+     * Gets a player by index.
+     *
+     * @param index The index of the player to get.
+     * @return Player - The player at the given index.
+     */
+    public Player getPlayer(int index) {
+        return this.players.get(index);
+    }
+
+    /**
      * Gets a starter deck of cards.
      *
      * @return starterDeck - A starter deck of cards.
@@ -64,10 +77,5 @@ public class PlayerManager {
         }
         return starterDeck;
     }
-//    public static ArrayList<Card> getStarterDeck() {
-//        return CardLibrary.STARTER_CARDS.stream()
-//                .map(Card::new)
-//                .collect(Collectors.toCollection(ArrayList::new));
-//    }
 
 }

@@ -28,8 +28,11 @@ import java.util.Collections;
  */
 public class Hand extends AbstractCardGroup {
 
+
     /**
-     * Constructor for Hand
+     * Adds a card to the hand and sorts the hand by mana cost
+     *
+     * @param card Card to add
      */
     @Override
     public void add(Card card) {
@@ -44,6 +47,11 @@ public class Hand extends AbstractCardGroup {
         Collections.sort(this.cards);
     }
 
+    /**
+     * String representation of the hand
+     *
+     * @return String - representation of the hand
+     */
     @Override
     public String toString() {
         

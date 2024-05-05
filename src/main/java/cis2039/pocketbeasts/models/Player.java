@@ -28,8 +28,8 @@ import cis2039.pocketbeasts.utils.Config;
  */
 public class Player implements Attackable {
 
-    private String name;
-    private int id;
+    private final String name;
+    private final int id;
     private static int nextId = 1;
     private int health;
     private final int MAX_MANA;
@@ -42,6 +42,12 @@ public class Player implements Attackable {
     private final InPlay inPlay;
     private final Graveyard graveyard;
 
+    /**
+     * Default constructor for Player.
+     * Initialises a new player with the given name.
+     *
+     * @param name The name of the player.
+     */
     public Player(String name) {
         this.name = name;
         this.id = nextId++;
@@ -54,34 +60,95 @@ public class Player implements Attackable {
         this.graveyard = new Graveyard();
     }
 
+    /**
+     * Overloaded constructor for testing purposes.
+     * Initialises a new player with the given name and deck.
+     *
+     * @param name The name of the player.
+     * @param deck The deck of cards to give the player.
+     */
+    public Player(String name, Deck deck) {
+        this.name = name;
+        this.id = nextId++;
+        this.health = Config.INITIAL_HEALTH;
+        this.MAX_MANA = Config.MAX_MANA;
+        this.manaAvailable = 0;
+        this.manaTicker = 0;
+        this.deck = deck;
+        this.hand = new Hand();
+        this.inPlay = new InPlay();
+        this.graveyard = new Graveyard();
+    }
+
+    /**
+     * Gets the player's name.
+     *
+     * @return String this.name - The player's name.
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Gets the player's ID.
+     *
+     * @return int this.id - The player's ID.
+     */
     public int getId() {
         return this.id;
     }
 
+    /**
+     * Gets the player's health.
+     *
+     * @return int this.health - The player's health.
+     */
+    @Override
     public int getHealth() {
         return this.health;
     }
-    
+
+    /**
+     * Gets the player's deck.
+     *
+     * @return Deck this.deck - The player's deck.
+     */
     public Deck getDeck() {
         return this.deck;
     }
 
+    /**
+     * Sets the player's deck.
+     *
+     * @param deck The deck to set for the player.
+     */
     public void setDeck(Deck deck) {
         this.deck = deck;
     }
-    
+
+    /**
+     * Gets the player's hand.
+     *
+     * @return Hand this.hand - The player's hand.
+     */
     public Hand getHand() {
         return this.hand;
     }
 
+    /**
+     * Gets the player's in-play cards.
+     *
+     * @return InPlay this.inPlay - The player's in-play cards.
+     */
     public InPlay getInPlay() {
         return this.inPlay;
     }
-    
+
+    /**
+     * Gets the player's graveyard.
+     *
+     * @return Graveyard this.graveyard - The player's graveyard.
+     */
     public Graveyard getGraveyard() {
         return this.graveyard;
     }
@@ -117,6 +184,11 @@ public class Player implements Attackable {
         this.manaAvailable -= amount;
     }
 
+    /**
+     * Damages the player by a given amount.
+     *
+     * @param amount the amount to reduce the health by
+     */
     @Override
     public void damage(int amount) {
         if (amount < 0) { // Defensive programming
@@ -125,11 +197,21 @@ public class Player implements Attackable {
         this.health -= amount;
     }
 
+    /**
+     * Checks if the player's health is <= 0.
+     *
+     * @return Boolean - true if the player is dead, false otherwise
+     */
     @Override
     public boolean isDead() {
         return health <= 0;
     }
 
+    /**
+     * Provides a string representation of the player.
+     *
+     * @return String - A string representation of the player.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
