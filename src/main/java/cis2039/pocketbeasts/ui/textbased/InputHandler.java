@@ -1,4 +1,4 @@
-package cis2039.pocketbeasts.utils;
+package cis2039.pocketbeasts.ui.textbased;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -7,6 +7,20 @@ import java.util.ArrayList;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Player;
 
+/**
+ * Handles user input for the text-based interface.
+ * <p>
+ * The InputHandler class is responsible for handling user input in the text-based interface.
+ * It prompts the user for input and validates the response.
+ * It also contains methods for prompting the user to play cards and attack.
+ * The InputHandler class is used by the GameManager class to handle user input.
+ * </p>
+ *
+ * @author Rhys Kemp
+ * @see Card
+ * @see Player
+ * @see cis2039.pocketbeasts.gameengine.GameManager
+ */
 public class InputHandler {
 
     public Scanner scanner;
@@ -29,7 +43,7 @@ public class InputHandler {
 
         String response = this.scanner.nextLine();
 
-        if (Arrays.stream(validResponse).anyMatch(response::equals)) {
+        if (Arrays.asList(validResponse).contains(response)) {
             return response;
         }
 
@@ -51,7 +65,7 @@ public class InputHandler {
      * Prompts the user to play a card.
      *
      * @param player The player who is playing the card.
-     * @param card The card being played.
+     * @param card   The card being played.
      * @return Boolean - Whether the card should be played.
      */
     public boolean playCardPrompt(String player, String card) {
@@ -62,7 +76,7 @@ public class InputHandler {
      * Prompts the user to attack with a card.
      *
      * @param player The player who is attacking.
-     * @param card The card being used to attack.
+     * @param card   The card being used to attack.
      * @return Boolean - Whether the card should be used to attack.
      */
     public boolean attackWithCardPrompt(String player, String card) {
@@ -80,25 +94,25 @@ public class InputHandler {
 
         // Create a list of prompts for the user to choose from
         ArrayList<String> prompts = new ArrayList<>();
-        for (int i = 1; i < players.size()+1; i++) {
+        for (int i = 1; i < players.size() + 1; i++) {
             prompts.add(String.valueOf(i));
         }
 
         // Display the list of players to the user
         for (int i = 0; i < players.size(); i++) {
-            System.out.println(i+1 + ": " + players.get(i).getName());
+            System.out.println(i + 1 + ": " + players.get(i).getName());
         }
 
         // Get the user's choice and return the ID of the chosen player.
         // TODO - error handling
-        int choice = Integer.parseInt(getPrompt("Choose a number: ", prompts.toArray(new String[0]))) -1;
+        int choice = Integer.parseInt(getPrompt("Choose a number: ", prompts.toArray(new String[0]))) - 1;
         return players.get(choice).getId();
     }
 
     /**
      * Prompts the user to choose a target to attack.
      *
-     * @param player The player who is attacking.
+     * @param player        The player who is attacking.
      * @param attackingCard The card being used to attack.
      * @return Int id - The ID of the target to attack.
      */
@@ -111,8 +125,8 @@ public class InputHandler {
         prompts.add("1");
 
         for (int i = 0; i < player.getInPlay().getCards().size(); i++) {
-            System.out.println(i + 2 + ". " + player.getInPlay().getCard(i).getName()+ "    " + player.getInPlay().getCard(i).getHealth() + "HP | " + player.getInPlay().getCard(i).getAttack() + "ATK");
-            prompts.add(String.valueOf(i+2));
+            System.out.println(i + 2 + ". " + player.getInPlay().getCard(i).getName() + "    " + player.getInPlay().getCard(i).getHealth() + "HP | " + player.getInPlay().getCard(i).getAttack() + "ATK");
+            prompts.add(String.valueOf(i + 2));
         }
 
         // TODO - error handling
@@ -120,4 +134,11 @@ public class InputHandler {
         return Integer.parseInt(target);
     }
 
+    /**
+     * Waits for the user to press ENTER.
+     */
+    public void waitForInput() {
+        System.out.println("Press ENTER to continue...");
+        this.scanner.nextLine();
+    }
 }

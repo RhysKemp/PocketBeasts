@@ -6,7 +6,6 @@ import cis2039.pocketbeasts.models.Deck;
 import cis2039.pocketbeasts.models.Player;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * Initialises a new game with the given players.
@@ -17,11 +16,11 @@ import java.util.stream.Collectors;
  * @see Deck
  * @see Card
  * @see CardLibrary
- * @see GameLoop
+ * @see GameManager
  */
-public class PlayerInitializer {
+public class PlayerManager {
 
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
 
     /**
      * Initialises a new game with the given players.
@@ -33,7 +32,7 @@ public class PlayerInitializer {
      * @see Player
      * @see Deck
      */
-    public PlayerInitializer(String... playerNames) {
+    public PlayerManager(String... playerNames) {
         if (playerNames == null || playerNames.length == 0) { // Throws exception if playerNames is null or empty
             throw new IllegalArgumentException("At least one player is required.");
         }
