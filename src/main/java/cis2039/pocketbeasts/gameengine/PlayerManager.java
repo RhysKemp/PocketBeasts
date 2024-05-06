@@ -1,11 +1,13 @@
 package cis2039.pocketbeasts.gameengine;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.CardLibrary;
 import cis2039.pocketbeasts.models.Deck;
 import cis2039.pocketbeasts.models.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * PlayerManager class
@@ -70,12 +72,8 @@ public class PlayerManager {
      *
      * @return starterDeck - A starter deck of cards.
      */
-    public static ArrayList<Card> getStarterDeck() {
-        ArrayList<Card> starterDeck = new ArrayList<>();
-        for (Card card : CardLibrary.STARTER_CARDS) {
-            starterDeck.add(new Card(card));
-        }
-        return starterDeck;
+    public static ArrayList<ICard> getStarterDeck() {
+        return new ArrayList<>(Arrays.asList(CardLibrary.STARTER_CARDS));
     }
 
 }

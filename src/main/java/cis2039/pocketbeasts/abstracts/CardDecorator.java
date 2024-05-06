@@ -11,6 +11,7 @@ import cis2039.pocketbeasts.interfaces.ICard;
  *
  * @author Rhys Kemp
  * @see ICard
+ * @see cis2039.pocketbeasts.decorators
  */
 public abstract class CardDecorator implements ICard {
     protected ICard decoratedCard;

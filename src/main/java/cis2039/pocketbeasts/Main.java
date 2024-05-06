@@ -40,34 +40,22 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        System.out.println("PocketBeasts decorated card tests");
+        // SEE README.md FOR INSTRUCTIONS ON HOW TO RUN & TEST THE APPLICATION
 
-        Card card = new Card("1", "Test Card", 1, 1, 1);
-        System.out.println("Card: " + card.getName() + " Attack: " + card.getAttack());
+        // Initialise game and populate with players
+        PlayerManager playerManager = new PlayerManager("Steve", "Chris");
+        ArrayList<Player> players = playerManager.getPlayers();
 
-        System.out.println(card);
+        // Start game
+        Game game = new Game();
+        game.addPlayers(players);
+        game.newGame();
 
-        ICard attackCard = new AttackBoostCardDecorator(card);
-        System.out.println("Card: " + attackCard.getName() + " Attack: " + attackCard.getAttack());
-
-        System.out.println(attackCard);
-
-//        // SEE README.md FOR INSTRUCTIONS ON HOW TO RUN & TEST THE APPLICATION
-//
-//        // Initialise game and populate with players
-//        PlayerManager playerManager = new PlayerManager("Steve", "Chris");
-//        ArrayList<Player> players = playerManager.getPlayers();
-//
-//        // Start game
-//        Game game = new Game();
-//        game.addPlayers(players);
-//        game.newGame();
-//
-//        // Start game loop in text-based mode
-//        ConsoleOutputManager consoleOutputManager = new ConsoleOutputManager();
-//        ConsoleInputManager consoleInputManager = new ConsoleInputManager();
-//        GameManager gameManager = new GameManager(game, consoleOutputManager, consoleInputManager);
-//        gameManager.start();
+        // Start game loop in text-based mode
+        ConsoleOutputManager consoleOutputManager = new ConsoleOutputManager();
+        ConsoleInputManager consoleInputManager = new ConsoleInputManager();
+        GameManager gameManager = new GameManager(game, consoleOutputManager, consoleInputManager);
+        gameManager.start();
 
     }
 }

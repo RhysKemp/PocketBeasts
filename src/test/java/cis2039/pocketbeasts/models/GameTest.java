@@ -1,12 +1,16 @@
 package cis2039.pocketbeasts.models;
 
+import cis2039.pocketbeasts.decorators.GlobalAttackBuffCardDecorator;
+import cis2039.pocketbeasts.decorators.GlobalHealthBuffCardDecorator;
 import cis2039.pocketbeasts.gameengine.PlayerManager;
 import cis2039.pocketbeasts.interfaces.Attackable;
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.utils.Config;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -15,17 +19,19 @@ import static org.junit.Assert.*;
  * <p>
  * Tests for the Game class
  *
- * @version 0.1.0
- *
  * @author Rhys Kemp
- *
+ * @version 0.1.0
  */
 public class GameTest {
     private Game game;
+    private final ArrayList<ICard> decoratorTestCards = new ArrayList<>();
+    private Deck decoratorTestDeck;
 
     @Before
     public void setUp() {
         game = new Game();
+        decoratorTestCards.addAll(Arrays.asList(CardLibrary.DECORATOR_TEST_CARDS));
+        decoratorTestDeck = new Deck(decoratorTestCards);
     }
 
     /**
@@ -164,5 +170,60 @@ public class GameTest {
 
         assertFalse(player.getHand().getCards().contains(card));
         assertTrue(player.getInPlay().getCards().contains(card));
+    }
+
+    /**
+     * Test of applyCardDecorations method, of class Game.
+     * Test that the attack boost decorator increases the attack of the card
+     * by the correct amount.
+     */
+    @Test
+    public void applyCardDecorations_GlobalAttackBuffCardDecoratorWorks() {
+
+        Player player = new Player("decoratorPlayer", decoratorTestDeck);
+        for (int i = 0; i < Config.INITIAL_HAND_SIZE; i++) {
+            game.drawCard(player);
+        }
+        ArrayList<ICard> handCopy = new ArrayList<>(player.getHand().getCards());
+        player.setManaAvailable(10); // Set mana to allow cards to be played
+
+        int previousCardAttack = 1;
+        for (int i=0; i<Config.INITIAL_HAND_SIZE; i++) {
+            ICard card = handCopy.get(i);
+            game.playCardFromHand(player, card);
+
+            if (card instanceof GlobalAttackBuffCardDecorator) {
+                int boostAmount = ((GlobalAttackBuffCardDecorator) card).getBoostAmount();
+                assertEquals(previousCardAttack + boostAmount, player.getInPlay().getCard(i-1).getAttack());
+            }
+            previousCardAttack = card.getAttack();
+        }
+    }
+
+    /**
+     * Test of applyCardDecorations method, of class Game.
+     * Test that the health boost decorator increases the health of the card
+     * by the correct amount.
+     */
+    @Test
+    public void applyCardDecorations_GlobalHealthBuffCardDecoratorWorks(){
+        Player player = new Player("decoratorPlayer", decoratorTestDeck);
+        for (int i = 0; i < Config.INITIAL_HAND_SIZE; i++) {
+            game.drawCard(player);
+        }
+        ArrayList<ICard> handCopy = new ArrayList<>(player.getHand().getCards());
+        player.setManaAvailable(10); // Set mana to allow cards to be played
+
+        int previousCardHealth = 1;
+        for (int i=0; i<Config.INITIAL_HAND_SIZE; i++) {
+            ICard card = handCopy.get(i);
+            game.playCardFromHand(player, card);
+
+            if (card instanceof GlobalHealthBuffCardDecorator) {
+                int boostAmount = ((GlobalHealthBuffCardDecorator) card).getBoostAmount();
+                assertEquals(previousCardHealth + boostAmount, player.getInPlay().getCard(i-1).getHealth());
+            }
+            previousCardHealth = card.getHealth();
+        }
     }
 }

@@ -162,6 +162,16 @@ public class Player implements Attackable {
         return this.manaAvailable;
     }
 
+    /**
+     * Sets mana available to the player.
+     * This is used for testing purposes & potential expansion.
+     *
+     * @param mana The amount of mana available to the player.
+     */
+    public void setManaAvailable(int mana) {
+        this.manaAvailable = mana;
+    }
+
 
     /**
      * Adds mana to the player's mana pool.

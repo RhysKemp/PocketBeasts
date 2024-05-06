@@ -138,11 +138,6 @@ public class Card implements ICard, Attackable {
         return health <= 0;
     }
 
-    @Override
-    public List<ICard> getCardsInPlay() {
-        return List.of();
-    }
-
     /**
      * Returns a string representation of the card.
      *

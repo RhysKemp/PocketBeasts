@@ -26,9 +26,9 @@ public class HealthBoostCardDecorator extends CardDecorator {
      *
      * @param decoratedCard The card to decorate.
      */
-    public HealthBoostCardDecorator(ICard decoratedCard) {
+    public HealthBoostCardDecorator(ICard decoratedCard, int additionalHealth) {
         super(decoratedCard);
-        this.additionalHealth = Config.DEFENSE_CARD_HEALTH;
+        this.additionalHealth = additionalHealth;
     }
 
     /**

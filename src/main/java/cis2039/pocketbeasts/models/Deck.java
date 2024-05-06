@@ -38,7 +38,7 @@ public class Deck extends AbstractCardGroup {
      *
      * @param cards ArrayList<Card> - The cards to add to the deck.
      */
-    public Deck(ArrayList<Card> cards) {
+    public Deck(ArrayList<ICard> cards) {
         this.cards.addAll(cards);
     }
 

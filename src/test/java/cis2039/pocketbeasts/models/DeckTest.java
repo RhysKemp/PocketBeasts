@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  */
 public class DeckTest {
     private Deck deck;
-    private ArrayList<Card> cards;
+    private ArrayList<ICard> cards;
 
     /**
      * Set up the test environment

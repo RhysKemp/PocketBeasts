@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.models;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.utils.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class PlayerTest {
      */
     @Before
     public void setUp() {
-        deck = new Deck(new ArrayList<Card>() {{
+        deck = new Deck(new ArrayList<ICard>() {{
             add(new Card("id1", "name1", 1, 2, 3));
             add(new Card("id2", "name2", 4, 5, 6));
         }});

@@ -1,5 +1,9 @@
 package cis2039.pocketbeasts.models;
 
+import cis2039.pocketbeasts.decorators.AttackBoostCardDecorator;
+import cis2039.pocketbeasts.decorators.GlobalAttackBuffCardDecorator;
+import cis2039.pocketbeasts.decorators.GlobalHealthBuffCardDecorator;
+import cis2039.pocketbeasts.decorators.HealthBoostCardDecorator;
 import cis2039.pocketbeasts.interfaces.Attackable;
 import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.utils.Config;
@@ -12,7 +16,6 @@ import java.util.ArrayList;
  * This class contains methods for managing the game state.
  *
  * @author Rhys Kemp
- *
  * @see Deck
  * @see Player
  * @see Card
@@ -155,6 +158,7 @@ public class Game {
     public void playCardFromHand(Player player, ICard card) {
         if (player.getManaAvailable() >= card.getManaCost()) {
             player.getInPlay().add(card);
+            applyCardDecorations(player, card);
             player.getHand().remove(card);
             player.useMana(card.getManaCost());
         }
@@ -164,7 +168,7 @@ public class Game {
      * Damage a player with fatigue damage if their deck is empty.
      *
      * @param player The player to damage.
-     * @return Boolean - Whether the player took fatigue damage.
+     * @return {@code boolean} - Whether the player took fatigue damage.
      */
     public boolean fatigueDamage(Player player) {
         if (player.getDeck().isEmpty()) {
@@ -173,5 +177,49 @@ public class Game {
         }
         return false;
     }
+
+    /**
+     * Apply card decorations
+     * <p>
+     * This method applies the decorations from a card to a player.
+     * It checks for specific decorators and applies their effects.
+     * Reason for this is to the apply open-closed principle.
+     *
+     * @param player The player to apply the decorations to.
+     * @param card   The card to apply the decorations from.
+     */
+    public void applyCardDecorations(Player player, ICard card) {
+        if (card instanceof GlobalAttackBuffCardDecorator) { // Global attack buff decorator
+            globalAttackBuff(player, card);
+        }
+        // other decorators
+    }
+
+    /**
+     * Apply a global attack buff to all cards in play.
+     *
+     * @param player The player to apply the buff to.
+     * @param card   The card to apply the buff from.
+     */
+    public void globalAttackBuff(Player player, ICard card) {
+        int boostAmount = ((GlobalAttackBuffCardDecorator) card).getBoostAmount();
+        for (int i = 0; i < player.getInPlay().getCards().size(); i++) { // Apply the buff to all cards in play bar the buffing card
+            ICard c = player.getInPlay().getCard(i);
+            if (c != card) {
+                player.getInPlay().getCards().set(i, new AttackBoostCardDecorator(c, boostAmount));
+            }
+        }
+    }
+
+    public void globalHealthBuff(Player player, ICard card) {
+        int boostAmount = ((GlobalHealthBuffCardDecorator) card).getBoostAmount();
+        for (int i = 0; i < player.getInPlay().getCards().size(); i++) { // Apply the buff to all cards in play bar the buffing card
+            ICard c = player.getInPlay().getCard(i);
+            if (c != card) {
+                player.getInPlay().getCards().set(i, new HealthBoostCardDecorator(c, boostAmount));
+            }
+        }
+    }
+
 
 }
