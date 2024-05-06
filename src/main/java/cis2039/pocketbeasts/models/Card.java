@@ -17,6 +17,7 @@
 package cis2039.pocketbeasts.models;
 
 import cis2039.pocketbeasts.interfaces.Attackable;
+import cis2039.pocketbeasts.interfaces.ICard;
 
 /**
  * Represents a card in a game of Pocket Beasts.
@@ -27,7 +28,7 @@ import cis2039.pocketbeasts.interfaces.Attackable;
  * @see Attackable
  * @see Comparable
  */
-public class Card implements Attackable, Comparable<Card> {
+public class Card implements ICard, Attackable, Comparable<Card> {
 
     private final String id;
     private final String name;
@@ -65,18 +66,38 @@ public class Card implements Attackable, Comparable<Card> {
         this.health = card.health;
     }
 
+    /**
+     * Gets the card's unique identifier.
+     *
+     * @return String {@code id} - The card's unique identifier.
+     */
     public String getId() {
         return this.id;
     }
-    
+
+    /**
+     * Gets the card's name.
+     *
+     * @return String {@code name} - The card's name.
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Gets the card's mana cost.
+     *
+     * @return int {@code manaCost} - The card's mana cost.
+     */
     public int getManaCost() {
         return this.manaCost;
     }
-    
+
+    /**
+     * Gets the card's attack value.
+     *
+     * @return int {@code attack} - The card's attack value.
+     */
     public int getAttack() {
         return this.attack;
     }
@@ -92,6 +113,11 @@ public class Card implements Attackable, Comparable<Card> {
     }
 
 
+    /**
+     * Reduces the health of the card by the specified amount.
+     *
+     * @param amount the amount to reduce the health by
+     */
     @Override
     public void damage(int amount) {
         if (amount < 0) { // Defensive programming
@@ -100,17 +126,33 @@ public class Card implements Attackable, Comparable<Card> {
         this.health -= amount;
     }
 
+    /**
+     * Checks if the card is dead.
+     *
+     * @return boolean {@code true} if the card is dead, {@code false} otherwise.
+     */
     @Override
     public boolean isDead() {
         return health <= 0;
     }
 
+    /**
+     * Returns a string representation of the card.
+     *
+     * @return String representation of the card.
+     */
     @Override
     public String toString() {
         return this.name + " (" + this.id + ") Mana Cost/" + this.manaCost + 
                 " Attack/" + this.attack + " Health/" + this.health;
     }
 
+    /**
+     * Compares this card to another card based on mana cost.
+     *
+     * @param o the card to compare to
+     * @return int a negative integer, zero, or a positive integer as this card is less than, equal to, or greater than the specified card
+     */
     @Override
     public int compareTo(Card o) {
         return Integer.compare(this.getManaCost(), o.getManaCost());
