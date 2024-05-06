@@ -42,6 +42,19 @@ mvn test
 - Players can attack each other with their cards.
 - The game continues until there is only one player left.
 
+## Configurations
+
+The game configurations are stored in the `Config` class. This class contains constants that are used throughout the game. Here are some of the configurations:
+
+- `MAX_MANA`: The maximum amount of mana a player can have.
+- `INITIAL_HEALTH`: The initial health of a player.
+- `INITIAL_HAND_SIZE`: The initial number of cards in a player's hand.
+- `FATIGUE_DAMAGE`: The amount of damage a player takes when their deck is empty.
+- `GLOBAL_ATTACK_BUFF`: The amount of attack buff applied globally to all cards in play.
+- `GLOBAL_HEALTH_BUFF`: The amount of health buff applied globally to all cards in play.
+
+These configurations can be adjusted to change the game dynamics. For example, increasing the `INITIAL_HAND_SIZE` will give players more options at the start of the game, potentially leading to more strategic gameplay. Similarly, adjusting the `FATIGUE_DAMAGE` can change how players manage their decks throughout the game. Changing the `INITIAL_HEALTH` constant to 1 can be very useful for testing purposes.
+
 ## Game Classes
 
 - `Main`: The entry point of the application.
