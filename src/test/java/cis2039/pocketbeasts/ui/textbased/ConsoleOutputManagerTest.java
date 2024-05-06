@@ -1,6 +1,6 @@
 package cis2039.pocketbeasts.ui.textbased;
 
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.players.Player;
 import org.junit.Before;
 import org.junit.Test;
 

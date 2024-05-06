@@ -1,9 +1,8 @@
 package cis2039.pocketbeasts.gameengine;
 
 import cis2039.pocketbeasts.interfaces.ICard;
-import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.CardLibrary;
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.players.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -78,12 +77,4 @@ public class PlayerManagerTest {
         playerManager.getPlayer(10);
     }
 
-    /**
-     * Test of getStarterDeck method, of class PlayerManager.
-     */
-    @Test
-    public void getStarterDeck_ReturnsCorrectDeckSize() {
-        ArrayList<ICard> starterDeck = PlayerManager.getStarterDeck();
-        assertEquals(CardLibrary.STARTER_CARDS.length, starterDeck.size());
-    }
 }

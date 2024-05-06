@@ -5,7 +5,7 @@ import cis2039.pocketbeasts.interfaces.InputManager;
 import cis2039.pocketbeasts.interfaces.OutputManager;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Game;
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.ui.textbased.ConsoleInputManager;
 import cis2039.pocketbeasts.ui.textbased.ConsoleOutputManager;
 

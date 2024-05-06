@@ -6,6 +6,7 @@ import cis2039.pocketbeasts.decorators.GlobalHealthBuffCardDecorator;
 import cis2039.pocketbeasts.decorators.HealthBoostCardDecorator;
 import cis2039.pocketbeasts.interfaces.Attackable;
 import cis2039.pocketbeasts.interfaces.ICard;
+import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.utils.Config;
 
 import java.util.ArrayList;

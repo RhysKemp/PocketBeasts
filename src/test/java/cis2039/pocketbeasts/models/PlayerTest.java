@@ -1,6 +1,7 @@
 package cis2039.pocketbeasts.models;
 
 import cis2039.pocketbeasts.interfaces.ICard;
+import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.utils.Config;
 import org.junit.Before;
 import org.junit.Test;

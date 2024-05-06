@@ -1,13 +1,13 @@
 package cis2039.pocketbeasts.gameengine;
 
-import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.CardLibrary;
 import cis2039.pocketbeasts.models.Deck;
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.factory.DeckFactory;
+import cis2039.pocketbeasts.models.factory.PlayerFactory;
+import cis2039.pocketbeasts.models.players.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * PlayerManager class
@@ -18,6 +18,7 @@ import java.util.Arrays;
  *
  * @author Rhys Kemp
  * @see Player
+ * @see PlayerFactory
  * @see Deck
  * @see Card
  * @see CardLibrary
@@ -26,6 +27,7 @@ import java.util.Arrays;
 public class PlayerManager {
 
     private final ArrayList<Player> players;
+    private static final PlayerFactory playerFactory = new PlayerFactory();
 
     /**
      * Initialises a new game with the given players.
@@ -42,10 +44,13 @@ public class PlayerManager {
             throw new IllegalArgumentException("At least one player is required.");
         }
         this.players = new ArrayList<>(playerNames.length);
-        for (int i = 0; i < playerNames.length; i++) { // for each player name, create a new player with a starter deck
-            this.players.add(new Player(playerNames[i]));
-            this.players.get(i).setDeck(new Deck(getStarterDeck()));
+        for (String playerName : playerNames) {
+            Player player = playerFactory.createPlayer("Player", playerName);
+            player.setDeck(DeckFactory.createDeck("StarterDeck"));
+            this.players.add(player);
+
         }
+
     }
 
     /**
@@ -65,15 +70,6 @@ public class PlayerManager {
      */
     public Player getPlayer(int index) {
         return this.players.get(index);
-    }
-
-    /**
-     * Gets a starter deck of cards.
-     *
-     * @return starterDeck - A starter deck of cards.
-     */
-    public static ArrayList<ICard> getStarterDeck() {
-        return new ArrayList<>(Arrays.asList(CardLibrary.STARTER_CARDS));
     }
 
 }

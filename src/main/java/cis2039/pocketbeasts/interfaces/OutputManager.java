@@ -1,6 +1,6 @@
 package cis2039.pocketbeasts.interfaces;
 
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.players.Player;
 
 /**
  * Manages the output to the user.

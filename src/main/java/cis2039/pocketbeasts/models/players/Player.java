@@ -14,9 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
-package cis2039.pocketbeasts.models;
+package cis2039.pocketbeasts.models.players;
 
 import cis2039.pocketbeasts.interfaces.Attackable;
+import cis2039.pocketbeasts.models.Deck;
+import cis2039.pocketbeasts.models.Graveyard;
+import cis2039.pocketbeasts.models.Hand;
+import cis2039.pocketbeasts.models.InPlay;
 import cis2039.pocketbeasts.utils.Config;
 
 /**

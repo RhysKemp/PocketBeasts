@@ -4,7 +4,8 @@ import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Deck;
 import cis2039.pocketbeasts.models.Game;
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.factory.DeckFactory;
+import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.utils.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class GameManagerTest {
 
     @Test
     public void start_WithOnePlayer_StopsGameAndDeclaresWinner() {
-        game.addPlayer(new Player("Player1", new Deck(PlayerManager.getStarterDeck())));
+        game.addPlayer(new Player("Player1", DeckFactory.createDeck("StarterDeck")));
         System.out.println("GameManagerTest: start_WithOnePlayer_StopsGameAndDeclaresWinner " + game.getPlayers());
         gameManager.start();
         assertFalse(gameManager.isRunning());
@@ -73,8 +74,8 @@ public class GameManagerTest {
      */
     @Test
     public void start_WithDeadPlayer_RemovesPlayerAndStopsGame() {
-        Player player = new Player("Player1", new Deck(PlayerManager.getStarterDeck()));
-        Player player2 = new Player("Player2", new Deck(PlayerManager.getStarterDeck()));
+        Player player = new Player("Player1", DeckFactory.createDeck("StarterDeck"));
+        Player player2 = new Player("Player2", DeckFactory.createDeck("StarterDeck"));
 
         player2.damage(Config.INITIAL_HEALTH);
         game.addPlayer(player);
@@ -93,7 +94,7 @@ public class GameManagerTest {
     @Test
     public void start_WithTwoPlayers_ChecksFatigueDeath() {
         Player player1 = new Player("Player1", new Deck(new ArrayList<>())); // Empty deck to force fatigue damage
-        Player player2 = new Player("Player2", new Deck(PlayerManager.getStarterDeck()));
+        Player player2 = new Player("Player2", DeckFactory.createDeck("StarterDeck"));
         game.addPlayer(player1);
         game.addPlayer(player2);
 
@@ -120,8 +121,8 @@ public class GameManagerTest {
      */
     @Test
     public void start_WithMultipleRounds_AttackPlayerDirectly() throws InterruptedException {
-        Player player1 = new Player("Player1", new Deck(PlayerManager.getStarterDeck()));
-        Player player2 = new Player("Player2", new Deck(PlayerManager.getStarterDeck()));
+        Player player1 = new Player("Player1", DeckFactory.createDeck("StarterDeck"));
+        Player player2 = new Player("Player2", DeckFactory.createDeck("StarterDeck"));
         game.addPlayer(player1);
         game.addPlayer(player2);
 
@@ -151,9 +152,9 @@ public class GameManagerTest {
      */
     @Test
     public void start_WithMultiplePlayers_PlayersTakeTurnsInCorrectOrder() {
-        Player player1 = new Player("Player1", new Deck(PlayerManager.getStarterDeck()));
-        Player player2 = new Player("Player2", new Deck(PlayerManager.getStarterDeck()));
-        Player player3 = new Player("Player3", new Deck(PlayerManager.getStarterDeck()));
+        Player player1 = new Player("Player1", DeckFactory.createDeck("StarterDeck"));
+        Player player2 = new Player("Player2", DeckFactory.createDeck("StarterDeck"));
+        Player player3 = new Player("Player3", DeckFactory.createDeck("StarterDeck"));
         game.addPlayer(player1);
         game.addPlayer(player2);
         game.addPlayer(player3);

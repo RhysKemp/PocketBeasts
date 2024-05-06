@@ -5,6 +5,8 @@ import cis2039.pocketbeasts.decorators.GlobalHealthBuffCardDecorator;
 import cis2039.pocketbeasts.gameengine.PlayerManager;
 import cis2039.pocketbeasts.interfaces.Attackable;
 import cis2039.pocketbeasts.interfaces.ICard;
+import cis2039.pocketbeasts.models.factory.DeckFactory;
+import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.utils.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +32,7 @@ public class GameTest {
     @Before
     public void setUp() {
         game = new Game();
-        decoratorTestCards.addAll(Arrays.asList(CardLibrary.DECORATOR_TEST_CARDS));
+        decoratorTestCards.addAll(Arrays.asList(CardLibrary.TEST_CARDS));
         decoratorTestDeck = new Deck(decoratorTestCards);
     }
 
@@ -84,7 +86,7 @@ public class GameTest {
      */
     @Test
     public void newGame_DealsInitialHandToPlayers() {
-        Player player = new Player("Player1", new Deck(PlayerManager.getStarterDeck()));
+        Player player = new Player("Player1", DeckFactory.createDeck("StarterDeck"));
         game.addPlayer(player);
         game.newGame();
         assertEquals(Config.INITIAL_HAND_SIZE, player.getHand().count());
@@ -116,7 +118,7 @@ public class GameTest {
      */
     @Test
     public void drawCard_AddsCardToPlayerHand() {
-        Player player = new Player("Player1", new Deck(PlayerManager.getStarterDeck()));
+        Player player = new Player("Player1", DeckFactory.createDeck("StarterDeck"));
         game.addPlayer(player);
         game.newGame();
         int initialHandSize = player.getHand().count();
@@ -157,7 +159,7 @@ public class GameTest {
      */
     @Test
     public void playCardFromHand_MovesCardFromHandToInPlay() {
-        Player player = new Player("Player1", new Deck(PlayerManager.getStarterDeck()));
+        Player player = new Player("Player1", DeckFactory.createDeck("StarterDeck"));
         Card card = new Card("id", "name", 1, 1, 1);
 
         player.getHand().add(card);

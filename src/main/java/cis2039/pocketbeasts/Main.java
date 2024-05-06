@@ -18,11 +18,8 @@ package cis2039.pocketbeasts;
 
 import cis2039.pocketbeasts.gameengine.GameManager;
 import cis2039.pocketbeasts.gameengine.PlayerManager;
-import cis2039.pocketbeasts.interfaces.ICard;
-import cis2039.pocketbeasts.models.Card;
-import cis2039.pocketbeasts.decorators.AttackBoostCardDecorator;
 import cis2039.pocketbeasts.models.Game;
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.ui.textbased.ConsoleInputManager;
 import cis2039.pocketbeasts.ui.textbased.ConsoleOutputManager;
 

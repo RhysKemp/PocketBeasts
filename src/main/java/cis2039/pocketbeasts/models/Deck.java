@@ -18,6 +18,7 @@ package cis2039.pocketbeasts.models;
 
 import cis2039.pocketbeasts.abstracts.AbstractCardGroup;
 import cis2039.pocketbeasts.interfaces.ICard;
+import cis2039.pocketbeasts.models.players.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;

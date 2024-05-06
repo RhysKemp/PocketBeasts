@@ -1,7 +1,7 @@
 package cis2039.pocketbeasts.ui.textbased;
 
 import cis2039.pocketbeasts.interfaces.OutputManager;
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.utils.Config;
 
 /**
@@ -14,7 +14,7 @@ import cis2039.pocketbeasts.utils.Config;
  *
  * @author Rhys Kemp
  * @see cis2039.pocketbeasts.gameengine.GameManager
- * @see cis2039.pocketbeasts.models.Player
+ * @see Player
  * @see cis2039.pocketbeasts.utils.Config
  */
 public class ConsoleOutputManager implements OutputManager {

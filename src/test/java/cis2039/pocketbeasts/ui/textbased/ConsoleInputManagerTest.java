@@ -3,7 +3,8 @@ package cis2039.pocketbeasts.ui.textbased;
 import cis2039.pocketbeasts.gameengine.PlayerManager;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Deck;
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.factory.DeckFactory;
+import cis2039.pocketbeasts.models.players.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class ConsoleInputManagerTest {
     @Before
     public void setUp() {
         inputManager = new TestConsoleInputManager();
-        player = new Player("TestPlayer", new Deck(PlayerManager.getStarterDeck()));
+        player = new Player("TestPlayer", DeckFactory.createDeck("StarterDeck"));
         card = new Card("id1", "name1", 1, 2, 3);
     }
 

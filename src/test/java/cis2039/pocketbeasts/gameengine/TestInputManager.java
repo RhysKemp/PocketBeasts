@@ -3,7 +3,7 @@ package cis2039.pocketbeasts.gameengine;
 import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.interfaces.InputManager;
 import cis2039.pocketbeasts.models.Card;
-import cis2039.pocketbeasts.models.Player;
+import cis2039.pocketbeasts.models.players.Player;
 
 import java.util.ArrayList;
 import java.util.List;
