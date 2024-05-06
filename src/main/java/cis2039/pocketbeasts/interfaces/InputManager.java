@@ -36,7 +36,7 @@ public interface InputManager {
      * @param card   The card being played.
      * @return Boolean - Whether the card should be played.
      */
-    boolean playCardPrompt(Player player, Card card);
+    boolean playCardPrompt(Player player, ICard card);
 
     /**
      * Prompts the user to attack with a card.
@@ -45,7 +45,7 @@ public interface InputManager {
      * @param card   The card being used to attack.
      * @return Boolean - Whether the card should be used to attack.
      */
-    boolean attackWithCardPrompt(Player player, Card card);
+    boolean attackWithCardPrompt(Player player, ICard card);
 
     /**
      * Prompts the user to choose a player to attack.
@@ -61,7 +61,7 @@ public interface InputManager {
      * @param player The player who is attacking.
      * @return Int id - The ID of the attack to use.
      */
-    int getAttackChoicePrompt(Player player, Card card);
+    int getAttackChoicePrompt(Player player, ICard card);
 
     /**
      * Waits for the user to press enter or input a command.

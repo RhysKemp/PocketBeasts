@@ -7,7 +7,7 @@ package cis2039.pocketbeasts.interfaces;
  *
  * @author Rhys Kemp
  */
-public interface ICard {
+public interface ICard extends Comparable<ICard> {
     /**
      * Gets the card's unique identifier.
      */

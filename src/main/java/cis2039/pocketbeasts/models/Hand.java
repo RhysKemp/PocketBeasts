@@ -17,6 +17,7 @@
 package cis2039.pocketbeasts.models;
 
 import cis2039.pocketbeasts.abstracts.AbstractCardGroup;
+import cis2039.pocketbeasts.interfaces.ICard;
 
 import java.util.Collections;
 
@@ -35,7 +36,7 @@ public class Hand extends AbstractCardGroup {
      * @param card Card to add
      */
     @Override
-    public void add(Card card) {
+    public void add(ICard card) {
         this.cards.add(card);
         this.sort();
     }
@@ -62,12 +63,12 @@ public class Hand extends AbstractCardGroup {
         }
         sb.append("\n");
         
-        for (Card card : this.cards) {
+        for (ICard card : this.cards) {
             sb.append(String.format("|%7d| ", card.getManaCost()));
         }
         sb.append("\n");
         
-        for (Card card : this.cards) {
+        for (ICard card : this.cards) {
             sb.append(String.format("|  %-5s| ", card.getId()));
         }
         sb.append("\n");
@@ -77,7 +78,7 @@ public class Hand extends AbstractCardGroup {
         }
         sb.append("\n");
         
-        for (Card card : this.cards) {
+        for (ICard card : this.cards) {
             sb.append(String.format("|%-2d %4d| ", card.getAttack(), card.getHealth()));
         }
         sb.append("\n");

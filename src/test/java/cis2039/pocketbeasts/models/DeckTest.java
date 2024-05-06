@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.models;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +39,7 @@ public class DeckTest {
      */
     @Test
     public void draw_RemovesCardFromDeck() {
-        Card drawnCard = deck.draw();
+        ICard drawnCard = deck.draw();
         assertEquals(1, deck.count());
         assertFalse(deck.getCards().contains(drawnCard));
     }
@@ -49,7 +50,7 @@ public class DeckTest {
      */
     @Test
     public void draw_ReturnsCorrectCard() {
-        Card drawnCard = deck.draw();
+        ICard drawnCard = deck.draw();
         assertEquals("id1", drawnCard.getId());
     }
 
@@ -70,9 +71,9 @@ public class DeckTest {
 //    @Test
     public void shuffle_ChangesOrderOfCards() {
         // This test is not deterministic, so it is commented out
-        Card firstCardBeforeShuffle = deck.getCards().get(0);
+        ICard firstCardBeforeShuffle = deck.getCards().get(0);
         deck.shuffle();
-        Card firstCardAfterShuffle = deck.getCards().get(0);
+        ICard firstCardAfterShuffle = deck.getCards().get(0);
         assertNotEquals(firstCardBeforeShuffle, firstCardAfterShuffle);
     }
 

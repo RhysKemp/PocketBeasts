@@ -18,6 +18,9 @@ package cis2039.pocketbeasts;
 
 import cis2039.pocketbeasts.gameengine.GameManager;
 import cis2039.pocketbeasts.gameengine.PlayerManager;
+import cis2039.pocketbeasts.interfaces.ICard;
+import cis2039.pocketbeasts.models.Card;
+import cis2039.pocketbeasts.decorators.AttackBoostCardDecorator;
 import cis2039.pocketbeasts.models.Game;
 import cis2039.pocketbeasts.models.Player;
 import cis2039.pocketbeasts.ui.textbased.ConsoleInputManager;
@@ -37,22 +40,34 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        // SEE README.md FOR INSTRUCTIONS ON HOW TO RUN & TEST THE APPLICATION
+        System.out.println("PocketBeasts decorated card tests");
 
-        // Initialise game and populate with players
-        PlayerManager playerManager = new PlayerManager("Steve", "Chris");
-        ArrayList<Player> players = playerManager.getPlayers();
+        Card card = new Card("1", "Test Card", 1, 1, 1);
+        System.out.println("Card: " + card.getName() + " Attack: " + card.getAttack());
 
-        // Start game
-        Game game = new Game();
-        game.addPlayers(players);
-        game.newGame();
+        System.out.println(card);
 
-        // Start game loop in text-based mode
-        ConsoleOutputManager consoleOutputManager = new ConsoleOutputManager();
-        ConsoleInputManager consoleInputManager = new ConsoleInputManager();
-        GameManager gameManager = new GameManager(game, consoleOutputManager, consoleInputManager);
-        gameManager.start();
+        ICard attackCard = new AttackBoostCardDecorator(card);
+        System.out.println("Card: " + attackCard.getName() + " Attack: " + attackCard.getAttack());
+
+        System.out.println(attackCard);
+
+//        // SEE README.md FOR INSTRUCTIONS ON HOW TO RUN & TEST THE APPLICATION
+//
+//        // Initialise game and populate with players
+//        PlayerManager playerManager = new PlayerManager("Steve", "Chris");
+//        ArrayList<Player> players = playerManager.getPlayers();
+//
+//        // Start game
+//        Game game = new Game();
+//        game.addPlayers(players);
+//        game.newGame();
+//
+//        // Start game loop in text-based mode
+//        ConsoleOutputManager consoleOutputManager = new ConsoleOutputManager();
+//        ConsoleInputManager consoleInputManager = new ConsoleInputManager();
+//        GameManager gameManager = new GameManager(game, consoleOutputManager, consoleInputManager);
+//        gameManager.start();
 
     }
 }

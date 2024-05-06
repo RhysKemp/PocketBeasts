@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.models;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class InPlayTest {
 
     @Test
     public void getCard_ReturnsCorrectCard() {
-        Card card = inPlay.getCard(0);
+        ICard card = inPlay.getCard(0);
         assertEquals("id1", card.getId());
     }
 

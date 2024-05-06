@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.ui.textbased;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.interfaces.InputManager;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Player;
@@ -71,7 +72,7 @@ public class ConsoleInputManager implements InputManager {
      * @return Boolean - Whether the card should be played.
      */
     @Override
-    public boolean playCardPrompt(Player player, Card card) {
+    public boolean playCardPrompt(Player player, ICard card) {
         return yesNoPrompt(player.getName() + " play " + card.getName() + "? (Yes/No) ");
     }
 
@@ -83,7 +84,7 @@ public class ConsoleInputManager implements InputManager {
      * @return Boolean - Whether the card should be used to attack.
      */
     @Override
-    public boolean attackWithCardPrompt(Player player, Card card) {
+    public boolean attackWithCardPrompt(Player player, ICard card) {
         return yesNoPrompt(player.getName() + " attack with " + card.getName() + "? (Yes/No) ");
     }
 
@@ -122,7 +123,7 @@ public class ConsoleInputManager implements InputManager {
      * @return Int id - The ID of the target to attack.
      */
     @Override
-    public int getAttackChoicePrompt(Player player, Card attackingCard) {
+    public int getAttackChoicePrompt(Player player, ICard attackingCard) {
         System.out.println("Attacking with: " + attackingCard.getName() + "    " + attackingCard.getHealth() + "HP | " + attackingCard.getAttack() + "ATK");
         System.out.println("What would you like to attack?");
 

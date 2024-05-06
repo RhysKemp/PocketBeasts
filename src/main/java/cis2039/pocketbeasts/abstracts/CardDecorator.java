@@ -94,4 +94,28 @@ public abstract class CardDecorator implements ICard {
         return decoratedCard.isDead();
     }
 
+    /**
+     * Returns a string representation of the card.
+     * <p>
+     * Uses this instead of decoratedCard to ensure the decorator is represented.
+     *
+     * @return String representation of the card.
+     */
+    @Override
+    public String toString() {
+        return this.getName() + " (" + this.getId() + ") Mana Cost/" + this.getManaCost() +
+                " Attack/" + this.getAttack() + " Health/" + this.getHealth();
+    }
+
+    /**
+     * Compare the card to another card
+     *
+     * @param o Card to compare to
+     * @return int 0
+     */
+    @Override
+    public int compareTo(ICard o) {
+        return Integer.compare(this.getManaCost(), o.getManaCost());
+    }
+
 }

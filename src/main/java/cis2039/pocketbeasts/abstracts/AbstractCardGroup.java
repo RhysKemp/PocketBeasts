@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.abstracts;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.models.Card;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public abstract class AbstractCardGroup {
 
-    protected final ArrayList<Card> cards;
+    protected final ArrayList<ICard> cards;
 
     /**
      * Constructor for AbstractCardGroup
@@ -31,7 +32,7 @@ public abstract class AbstractCardGroup {
      *
      * @return ArrayList<Card> cards
      */
-    public ArrayList<Card> getCards() {
+    public ArrayList<ICard> getCards() {
         return this.cards;
     }
 
@@ -40,7 +41,7 @@ public abstract class AbstractCardGroup {
      *
      * @param card Card to add
      */
-    public void add(Card card) {
+    public void add(ICard card) {
         this.cards.add(card);
     }
 
@@ -49,7 +50,7 @@ public abstract class AbstractCardGroup {
      *
      * @param card Card to remove
      */
-    public void remove(Card card) {
+    public void remove(ICard card) {
         this.cards.remove(card);
     }
 
@@ -58,7 +59,7 @@ public abstract class AbstractCardGroup {
      *
      * @param cards ArrayList<Card> cards to remove
      */
-    public void removeAll(ArrayList<Card> cards) {
+    public void removeAll(ArrayList<ICard> cards) {
         this.cards.removeAll(cards);
     }
 

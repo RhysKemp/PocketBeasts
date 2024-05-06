@@ -1,6 +1,7 @@
 package cis2039.pocketbeasts.models;
 
 import cis2039.pocketbeasts.interfaces.Attackable;
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.utils.Config;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  * @see Deck
  * @see Player
  * @see Card
+ * @see ICard
  * @see Attackable
  */
 public class Game {
@@ -122,7 +124,7 @@ public class Game {
      * @param attacker The card attacking.
      * @param defender The target of the attack.
      */
-    public static void attackWithCard(Card attacker, Attackable defender) {
+    public static void attackWithCard(ICard attacker, Attackable defender) {
         defender.damage(attacker.getAttack());
     }
 
@@ -133,8 +135,8 @@ public class Game {
      */
     public static void removeDeadCards(ArrayList<Player> players) {
         for (Player player : players) {
-            ArrayList<Card> toRemove = new ArrayList<>();
-            for (Card card : player.getInPlay().getCards()) {
+            ArrayList<ICard> toRemove = new ArrayList<>();
+            for (ICard card : player.getInPlay().getCards()) {
                 if (card.getHealth() <= 0) {
                     toRemove.add(card);
                     player.getGraveyard().add(card);
@@ -150,7 +152,7 @@ public class Game {
      * @param player The player to play the card for.
      * @param card   The card to play.
      */
-    public void playCardFromHand(Player player, Card card) {
+    public void playCardFromHand(Player player, ICard card) {
         if (player.getManaAvailable() >= card.getManaCost()) {
             player.getInPlay().add(card);
             player.getHand().remove(card);

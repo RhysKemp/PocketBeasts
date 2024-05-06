@@ -17,6 +17,7 @@
 package cis2039.pocketbeasts.models;
 
 import cis2039.pocketbeasts.abstracts.AbstractCardGroup;
+import cis2039.pocketbeasts.interfaces.ICard;
 
 /**
  *
@@ -32,7 +33,7 @@ public class InPlay extends AbstractCardGroup {
      * @param index The index of the card to get.
      * @return The card at the given index.
      */
-    public Card getCard(int index) {
+    public ICard getCard(int index) {
         return cards.get(index);
     }
 

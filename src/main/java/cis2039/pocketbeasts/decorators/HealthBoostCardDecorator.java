@@ -5,9 +5,9 @@ import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.utils.Config;
 
 /**
- * <h1>DefenseCardDecorator</h1>
+ * <h1>HealthBoostCardDecorator</h1>
  * <p>
- * DefenseCardDecorator class provides a decorator for cards that increases their health value by 2.
+ * HealthBoostCardDecorator class provides a decorator for cards that increases their health value by 2.
  * Realistically the card would have more interesting features, but this is a simple example.
  * It extends the CardDecorator class and overrides the getHealth method to add the additional functionality.
  * <p>
@@ -18,7 +18,7 @@ import cis2039.pocketbeasts.utils.Config;
  * @see ICard
  * @see Config
  */
-public class DefenseCardDecorator extends CardDecorator {
+public class HealthBoostCardDecorator extends CardDecorator {
     private final int additionalHealth;
 
     /**
@@ -26,7 +26,7 @@ public class DefenseCardDecorator extends CardDecorator {
      *
      * @param decoratedCard The card to decorate.
      */
-    public DefenseCardDecorator(ICard decoratedCard) {
+    public HealthBoostCardDecorator(ICard decoratedCard) {
         super(decoratedCard);
         this.additionalHealth = Config.DEFENSE_CARD_HEALTH;
     }

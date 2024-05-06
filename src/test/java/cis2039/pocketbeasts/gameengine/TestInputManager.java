@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.gameengine;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.interfaces.InputManager;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Player;
@@ -62,7 +63,7 @@ public class TestInputManager implements InputManager {
      * @return Boolean - Whether the card should be played.
      */
     @Override
-    public boolean playCardPrompt(Player player, Card card) {
+    public boolean playCardPrompt(Player player, ICard card) {
         messages.add(player + " playCardPrompt: " + card);
         return true;
     }
@@ -75,7 +76,7 @@ public class TestInputManager implements InputManager {
      * @return Boolean - Whether the card should be used to attack.
      */
     @Override
-    public boolean attackWithCardPrompt(Player player, Card card) {
+    public boolean attackWithCardPrompt(Player player, ICard card) {
         messages.add(player.getName() + " attackWithCardPrompt: " + card);
         Boolean response = attackResponses.poll();
         return response != null ? response : false;
@@ -102,7 +103,7 @@ public class TestInputManager implements InputManager {
      * @return Int {@code attackChoiceResponses.poll();} - The simulated index of the enemy to attack.
      */
     @Override
-    public int getAttackChoicePrompt(Player player, Card card) {
+    public int getAttackChoicePrompt(Player player, ICard card) {
         messages.add(player.getName() + " getAttackChoicePrompt: " + card);
         Integer response = attackChoiceResponses.poll();
         return response != null ? response : -1;

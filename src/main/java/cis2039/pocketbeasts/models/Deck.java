@@ -17,6 +17,7 @@
 package cis2039.pocketbeasts.models;
 
 import cis2039.pocketbeasts.abstracts.AbstractCardGroup;
+import cis2039.pocketbeasts.interfaces.ICard;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,11 +49,11 @@ public class Deck extends AbstractCardGroup {
      * @return Card - The card drawn from the deck.
      * @throws IllegalStateException if the deck is empty.
      */
-    public Card draw() {
+    public ICard draw() {
         if (this.cards.isEmpty()) {
             throw new IllegalStateException("The deck is empty.");
         }
-        Card card = this.cards.get(0);
+        ICard card = this.cards.get(0);
         this.cards.remove(0);
         return card;
     }

@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.gameengine;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Deck;
 import cis2039.pocketbeasts.models.Game;
@@ -218,7 +219,7 @@ public class GameManagerTest {
                     inputManager.getTargetPlayerResponses(),
                     inputManager.getAttackChoiceResponses()) {
                 @Override
-                public int getAttackChoicePrompt(Player player, Card card) { // Decrement the latch when a player attacks
+                public int getAttackChoicePrompt(Player player, ICard card) { // Decrement the latch when a player attacks
                     latch.countDown();
                     return super.getAttackChoicePrompt(player, card);
                 }

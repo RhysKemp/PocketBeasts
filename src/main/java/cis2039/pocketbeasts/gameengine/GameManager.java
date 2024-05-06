@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.gameengine;
 
+import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.interfaces.InputManager;
 import cis2039.pocketbeasts.interfaces.OutputManager;
 import cis2039.pocketbeasts.models.Card;
@@ -35,6 +36,7 @@ public class GameManager {
     private final InputManager inputManager;
     private final OutputManager outputManager;
     private final ArrayList<Player> players;
+    private List<ICard> cardsInPlay;
 
 
     /**
@@ -56,6 +58,7 @@ public class GameManager {
         this.inputManager = inputManager;
         this.outputManager = outputManager;
         this.players = game.getPlayers();
+        this.cardsInPlay = new ArrayList<>();
     }
 
     /**
@@ -138,8 +141,8 @@ public class GameManager {
      * @param player The player to attack with cards.
      */
     private void cardAttacks(Player player) {
-        List<Card> playerInPlayCopy = new ArrayList<>(player.getInPlay().getCards());
-        for (Card card : playerInPlayCopy) {
+        List<ICard> playerInPlayCopy = new ArrayList<>(player.getInPlay().getCards());
+        for (ICard card : playerInPlayCopy) {
             if (checkForWinner()) {
                 break;
             }
@@ -164,7 +167,7 @@ public class GameManager {
                         break;
                     }
                 } else {
-                    Card targetCard = targetPlayer.getInPlay().getCard(target - 2);
+                    ICard targetCard = targetPlayer.getInPlay().getCard(target - 2);
                     targetCard.damage(card.getAttack());
                     card.damage(targetCard.getAttack());
                 }
@@ -182,8 +185,8 @@ public class GameManager {
      * @param player The player to play cards from.
      */
     private void cardPlays(Player player) {
-        List<Card> playerHandCopy = new ArrayList<>(player.getHand().getCards());
-        for (Card card : playerHandCopy) {
+        List<ICard> playerHandCopy = new ArrayList<>(player.getHand().getCards());
+        for (ICard card : playerHandCopy) {
             if (card.getManaCost() <= player.getManaAvailable()) {
                 if (inputManager.playCardPrompt(player, card)) {
                     game.playCardFromHand(player, card);

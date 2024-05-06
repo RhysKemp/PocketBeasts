@@ -19,6 +19,8 @@ package cis2039.pocketbeasts.models;
 import cis2039.pocketbeasts.interfaces.Attackable;
 import cis2039.pocketbeasts.interfaces.ICard;
 
+import java.util.List;
+
 /**
  * Represents a card in a game of Pocket Beasts.
  *
@@ -28,7 +30,7 @@ import cis2039.pocketbeasts.interfaces.ICard;
  * @see Attackable
  * @see Comparable
  */
-public class Card implements ICard, Attackable, Comparable<Card> {
+public class Card implements ICard, Attackable {
 
     private final String id;
     private final String name;
@@ -136,6 +138,11 @@ public class Card implements ICard, Attackable, Comparable<Card> {
         return health <= 0;
     }
 
+    @Override
+    public List<ICard> getCardsInPlay() {
+        return List.of();
+    }
+
     /**
      * Returns a string representation of the card.
      *
@@ -154,7 +161,7 @@ public class Card implements ICard, Attackable, Comparable<Card> {
      * @return int a negative integer, zero, or a positive integer as this card is less than, equal to, or greater than the specified card
      */
     @Override
-    public int compareTo(Card o) {
+    public int compareTo(ICard o) {
         return Integer.compare(this.getManaCost(), o.getManaCost());
     }
 }

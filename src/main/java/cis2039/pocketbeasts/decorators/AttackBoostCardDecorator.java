@@ -5,9 +5,9 @@ import cis2039.pocketbeasts.interfaces.ICard;
 import cis2039.pocketbeasts.utils.Config;
 
 /**
- * <h1>AttackCardDecorator</h1>
+ * <h1>AttackBoostCardDecorator</h1>
  * <p>
- * AttackCardDecorator class provides a decorator for cards that increases their attack value by 1.
+ * AttackBoostCardDecorator class provides a decorator for cards that increases their attack value by 1.
  * Realistically the card would have more interesting features, but this is a simple example.
  * It extends the CardDecorator class and overrides the getAttack method to add the additional functionality.
  * <p>
@@ -20,7 +20,7 @@ import cis2039.pocketbeasts.utils.Config;
  * @see ICard
  * @see Config
  */
-public class AttackCardDecorator extends CardDecorator {
+public class AttackBoostCardDecorator extends CardDecorator {
     private final int additionalAttack;
 
     /**
@@ -28,9 +28,9 @@ public class AttackCardDecorator extends CardDecorator {
      *
      * @param decoratedCard The card to decorate.
      */
-    public AttackCardDecorator(ICard decoratedCard) {
+    public AttackBoostCardDecorator(ICard decoratedCard, int additionalAttack) {
         super(decoratedCard);
-        this.additionalAttack = Config.ATTACK_CARD_ATTACK;
+        this.additionalAttack = additionalAttack;
     }
 
     /**
