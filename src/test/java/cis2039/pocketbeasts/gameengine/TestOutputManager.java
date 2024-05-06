@@ -124,7 +124,18 @@ public class TestOutputManager implements OutputManager {
      */
     @Override
     public void update(String event, Object... object) {
-        messages.add(event);
+        switch (event) {
+            case "TURN_STARTED" -> {
+                displayPlayerTurn((Player) object[0]);
+                displayPlayer((Player) object[0]);
+            }
+            case "PLAYER_DEAD_AT_TURN_START", "PLAYER_DEFEATED" -> displayDefeated((Player) object[0]);
+            case "FATIGUE_DAMAGE_TAKEN" -> displayFatigueDamage((Player) object[0]);
+            case "GAME_WON" -> displayWinner((Player) object[0]);
+            default -> messages.add("Unknown event occurred.");
+
+        }
     }
+
 }
 

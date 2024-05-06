@@ -37,10 +37,10 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        // SEE README.md FOR INSTRUCTIONS ON HOW TO RUN & TEST THE APPLICATION
+        // SEE README.md
 
         // Initialise game and populate with players
-        PlayerManager playerManager = new PlayerManager("Steve", "Chris");
+        PlayerManager playerManager = new PlayerManager("Steve", "Chris", "Rhys");
         ArrayList<Player> players = playerManager.getPlayers();
 
         // Start game
