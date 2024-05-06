@@ -56,14 +56,12 @@ public class GameManagerTest {
 
     @Test
     public void start_WithNoPlayers_ThrowsException() {
-//        System.out.println("GameManagerTest: start_WithNoPlayers_ThrowsException " + game.getPlayers());
         assertThrows(IllegalArgumentException.class, () -> gameManager.start());
     }
 
     @Test
     public void start_WithOnePlayer_StopsGameAndDeclaresWinner() {
         game.addPlayer(new Player("Player1", DeckFactory.createDeck("StarterDeck")));
-        System.out.println("GameManagerTest: start_WithOnePlayer_StopsGameAndDeclaresWinner " + game.getPlayers());
         gameManager.start();
         assertFalse(gameManager.isRunning());
     }
@@ -181,27 +179,26 @@ public class GameManagerTest {
         assertEquals(messages.get(3), "Player1's turn");
         assertEquals(messages.get(4), "Player2's turn");
         assertEquals(messages.get(5), "Player3's turn");
-
-        System.out.println("GameManagerTest: start_WithMultiplePlayers_PlayersTakeTurnsInCorrectOrder, players take turns in correct order");
     }
 
 
-    /**
-     * Get a thread to run the game.
-     * <p>
-     * This method creates a thread to run the game.
-     *
-     * @return {@code gameThread} - The thread to run the game.
-     */
-    private Thread getThread() {
-        Thread gameThread = new Thread(() -> {
-            gameManager = new GameManager(game, outputManager, inputManager);
-            gameManager.start();
-        });
-
-        gameThread.start();
-        return gameThread;
-    }
+//    UNUSED METHOD
+//    /**
+//     * Get a thread to run the game.
+//     * <p>
+//     * This method creates a thread to run the game.
+//     *
+//     * @return {@code gameThread} - The thread to run the game.
+//     */
+//    private Thread getThread() {
+//        Thread gameThread = new Thread(() -> {
+//            gameManager = new GameManager(game, outputManager, inputManager);
+//            gameManager.start();
+//        });
+//
+//        gameThread.start();
+//        return gameThread;
+//    }
 
     /**
      * Overloaded method for getThread() to accept a latch parameter.

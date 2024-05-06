@@ -1,8 +1,6 @@
 package cis2039.pocketbeasts.gameengine;
 
-import cis2039.pocketbeasts.interfaces.ICard;
-import cis2039.pocketbeasts.interfaces.InputManager;
-import cis2039.pocketbeasts.interfaces.OutputManager;
+import cis2039.pocketbeasts.interfaces.*;
 import cis2039.pocketbeasts.models.Card;
 import cis2039.pocketbeasts.models.Game;
 import cis2039.pocketbeasts.models.players.Player;
@@ -36,7 +34,6 @@ public class GameManager {
     private final InputManager inputManager;
     private final OutputManager outputManager;
     private final ArrayList<Player> players;
-    private List<ICard> cardsInPlay;
 
 
     /**
@@ -58,7 +55,6 @@ public class GameManager {
         this.inputManager = inputManager;
         this.outputManager = outputManager;
         this.players = game.getPlayers();
-        this.cardsInPlay = new ArrayList<>();
     }
 
     /**
@@ -76,6 +72,8 @@ public class GameManager {
         if (game.getPlayers().isEmpty()) { // Defensive programming
             throw new IllegalArgumentException("At least one player is required.");
         }
+
+        game.registerObserver(outputManager);
         outputManager.welcomeMessage();
         inputManager.waitForOkay();
 
@@ -84,6 +82,7 @@ public class GameManager {
                 playTurn(player);
             }
         }
+        game.removeObserver(outputManager);
     }
 
     /**
@@ -104,32 +103,6 @@ public class GameManager {
         return this.isRunning;
     }
 
-    /**
-     * Checks for a winner.
-     * <p>
-     * If there is only one player left in the game, they are declared the winner.
-     */
-    private boolean checkForWinner() {
-        if (game.getPlayers().size() <= 1) {
-            this.stop();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Removes a dead player from the game.
-     *
-     * @param player The player to remove.
-     * @return Boolean - Whether the player was removed.
-     */
-    private boolean checkForDeadPlayer(Player player) {
-        if (player.isDead()) {
-            game.removePlayer(player);
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Allows a player to attack with cards in play.
@@ -140,10 +113,11 @@ public class GameManager {
      *
      * @param player The player to attack with cards.
      */
-    private void cardAttacks(Player player) {
+    private void attackPhase(Player player) {
         List<ICard> playerInPlayCopy = new ArrayList<>(player.getInPlay().getCards());
         for (ICard card : playerInPlayCopy) {
-            if (checkForWinner()) {
+            if (game.checkForWinner()) {
+                stop();
                 break;
             }
             if (inputManager.attackWithCardPrompt(player, card)) {
@@ -161,9 +135,10 @@ public class GameManager {
                 }
                 int target = inputManager.getAttackChoicePrompt(targetPlayer, card);
                 if (target == 1) {
-                    Game.attackWithCard(card, targetPlayer);
-                    checkForDeadPlayer(targetPlayer);
-                    if (checkForWinner()) {
+                    game.attackWithCard(card, targetPlayer);
+                    game.checkForDeadPlayer(targetPlayer);
+                    if (game.checkForWinner()) {
+                        stop();
                         break;
                     }
                 } else {
@@ -172,7 +147,7 @@ public class GameManager {
                     card.damage(targetCard.getAttack());
                 }
             }
-            Game.removeDeadCards(players);
+            game.removeDeadCards(players);
         }
     }
 
@@ -184,7 +159,7 @@ public class GameManager {
      *
      * @param player The player to play cards from.
      */
-    private void cardPlays(Player player) {
+    private void playPhase(Player player) {
         List<ICard> playerHandCopy = new ArrayList<>(player.getHand().getCards());
         for (ICard card : playerHandCopy) {
             if (card.getManaCost() <= player.getManaAvailable()) {
@@ -206,47 +181,34 @@ public class GameManager {
      * If the player is not dead, the player is prompted to play cards and attack.
      *
      * @param player The player to play a turn for.
-     * @see #checkForWinner()
-     * @see #checkForDeadPlayer(Player)
-     * @see #cardAttacks(Player)
-     * @see #cardPlays(Player)
+     * @see #attackPhase(Player)
+     * @see #playPhase(Player)
      * @see #stop()
      * @see #isRunning()
      */
     private void playTurn(Player player) {
-        if (checkForWinner()) {
-            outputManager.displayWinner(players.get(0));
+        if (game.checkForWinner()) {
             stop();
             return;
         }
 
-        if (player.isDead()) {
-            outputManager.displayDefeated(player);
-            game.removePlayer(player);
+        if (game.checkForDeadPlayer(player)) {
             return;
         }
 
-        if (game.fatigueDamage(player)) {
-            outputManager.displayFatigueDamage(player);
-        }
-        outputManager.displayPlayerTurn(player);
+        game.fatigueDamage(player);
+
         game.startTurn(player);
-        outputManager.displayPlayer(player);
 
-        if (checkForDeadPlayer(player)) {
-            outputManager.displayDefeated(player);
+        game.checkForDeadPlayer(player);
+
+        attackPhase(player);
+
+        if (!this.isRunning()) {
             return;
         }
 
-        cardAttacks(player);
-
-        if (checkForWinner()) {
-            stop();
-            return;
-        }
-
-        cardPlays(player);
+        playPhase(player);
         outputManager.displayFinalPlayState(player);
     }
-
 }

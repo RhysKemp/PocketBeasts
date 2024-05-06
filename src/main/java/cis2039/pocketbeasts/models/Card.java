@@ -19,8 +19,6 @@ package cis2039.pocketbeasts.models;
 import cis2039.pocketbeasts.interfaces.Attackable;
 import cis2039.pocketbeasts.interfaces.ICard;
 
-import java.util.List;
-
 /**
  * Represents a card in a game of Pocket Beasts.
  *

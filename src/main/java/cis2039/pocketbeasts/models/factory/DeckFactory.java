@@ -27,15 +27,11 @@ public class DeckFactory {
      * @return Deck The deck that was created.
      */
     public static Deck createDeck(String deckType) {
-        switch (deckType) {
-            case "StarterDeck":
-                return new Deck(new ArrayList<>(Arrays.asList(CardLibrary.STARTER_CARDS)));
-            case "TestDeck":
-                return new Deck(new ArrayList<>(Arrays.asList(CardLibrary.TEST_CARDS)));
-            case "CustomDeck":
-                return new Deck(new ArrayList<>());
-            default:
-                throw new IllegalArgumentException("Invalid deck type");
-        }
+        return switch (deckType) {
+            case "StarterDeck" -> new Deck(new ArrayList<>(Arrays.asList(CardLibrary.STARTER_CARDS)));
+            case "TestDeck" -> new Deck(new ArrayList<>(Arrays.asList(CardLibrary.TEST_CARDS)));
+            case "CustomDeck" -> new Deck(new ArrayList<>());
+            default -> throw new IllegalArgumentException("Invalid deck type");
+        };
     }
 }

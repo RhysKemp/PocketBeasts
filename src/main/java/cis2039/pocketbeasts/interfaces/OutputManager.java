@@ -16,7 +16,7 @@ import cis2039.pocketbeasts.models.players.Player;
  * @see cis2039.pocketbeasts.gameengine.GameManager
  * @see cis2039.pocketbeasts.ui.textbased.ConsoleOutputManager
  */
-public interface OutputManager {
+public interface OutputManager extends Observer {
 
     /**
      * Displays the welcome message to the user.

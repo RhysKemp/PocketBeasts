@@ -231,14 +231,10 @@ public class Player implements Attackable {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%-9s HEALTH/%-5d MANA/%d\n", this.name, this.health, this.manaAvailable));
 
-        for (int i=0; i<this.inPlay.count()+2; i++) {
-            sb.append("+-------+ ");
-        }
+        sb.append("+-------+ ".repeat(Math.max(0, this.inPlay.count() + 2)));
         sb.append("\n");
 
-        for (int i=0; i<2; i++) {
-            sb.append("|       | ");
-        }
+        sb.append("|       | ".repeat(2));
         for (int i=0; i<this.inPlay.count(); i++) {
             sb.append(String.format("|%7d| ", this.inPlay.getCard(i).getManaCost()));
         }
@@ -253,27 +249,21 @@ public class Player implements Attackable {
 
         sb.append(String.format("| %-6d| ", this.deck.count()));
         sb.append(String.format("| %-6d| ", this.graveyard.count()));
-        for (int i=0; i<this.inPlay.count(); i++) {
-            sb.append("|       | ");
-        }
+        sb.append("|       | ".repeat(Math.max(0, this.inPlay.count())));
         sb.append("\n");
 
-        for (int i=0; i<2; i++) {
-            sb.append("|       | ");
-        }
+        sb.append("|       | ".repeat(2));
         for (int i=0; i<this.inPlay.count(); i++) {
             sb.append(String.format("|%-2d %4d| ", this.inPlay.getCard(i).getAttack(), this.inPlay.getCard(i).getHealth()));
         }
         sb.append("\n");
 
-        for (int i=0; i<this.inPlay.count()+2; i++) {
-            sb.append("+-------+ ");
-        }
+        sb.append("+-------+ ".repeat(Math.max(0, this.inPlay.count() + 2)));
         sb.append("\n");
         sb.append(String.format("%d card(s) in hand.\n", this.hand.count()));
         sb.append("\n");
 
-        sb.append(this.hand.toString());
+        sb.append(this.hand);
 
         return sb.toString();
     }

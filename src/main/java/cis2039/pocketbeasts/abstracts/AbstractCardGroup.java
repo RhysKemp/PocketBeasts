@@ -1,7 +1,6 @@
 package cis2039.pocketbeasts.abstracts;
 
 import cis2039.pocketbeasts.interfaces.ICard;
-import cis2039.pocketbeasts.models.Card;
 
 import java.util.ArrayList;
 

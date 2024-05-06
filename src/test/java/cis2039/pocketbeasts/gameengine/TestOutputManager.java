@@ -105,5 +105,26 @@ public class TestOutputManager implements OutputManager {
     public List<String> getMessages() {
         return messages;
     }
+
+    /**
+     * Updates the messages list with a new message.
+     *
+     * @param event The message to add to the list.
+     */
+    @Override
+    public void update(String event) {
+        messages.add(event);
+    }
+
+    /**
+     * Updates the messages list with a new message.
+     *
+     * @param event  The message to add to the list.
+     * @param object The object to add to the list.
+     */
+    @Override
+    public void update(String event, Object... object) {
+        messages.add(event);
+    }
 }
 

@@ -33,16 +33,12 @@ public class CardFactory {
      */
     public static ICard createCard(String cardType, String id, String name, int manaCost, int attack, int health) {
         ICard card = new Card(id, name, manaCost, attack, health);
-        switch (cardType) {
-            case "BaseCard":
-                return card;
-            case "GlobalAttackBuffCardDecorator":
-                return new GlobalAttackBuffCardDecorator(card);
-            case "GlobalHealthBuffCardDecorator":
-                return new GlobalHealthBuffCardDecorator(card);
-            default:
-                throw new IllegalArgumentException("Invalid card type");
-        }
+        return switch (cardType) {
+            case "BaseCard" -> card;
+            case "GlobalAttackBuffCardDecorator" -> new GlobalAttackBuffCardDecorator(card);
+            case "GlobalHealthBuffCardDecorator" -> new GlobalHealthBuffCardDecorator(card);
+            default -> throw new IllegalArgumentException("Invalid card type");
+        };
 
     }
 }

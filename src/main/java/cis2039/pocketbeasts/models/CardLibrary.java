@@ -26,7 +26,6 @@ import cis2039.pocketbeasts.models.players.Player;
  * @author Rhys Kemp
  **/
 public class CardLibrary {
-    private static final CardFactory cardFactory = new CardFactory();
     /**
      * The cards that players start with.
      */
@@ -49,6 +48,7 @@ public class CardLibrary {
     public static final ICard[] TEST_CARDS = new ICard[] {
             CardFactory.createCard("BaseCard", "1", "BaseCard1", 1, 1, 1),
             CardFactory.createCard("GlobalAttackBuffCardDecorator", "2", "GlobalAttackBuffCard1", 1, 1, 1),
+            CardFactory.createCard("GlobalHealthBuffCardDecorator", "3", "GlobalHealthBuffCard1", 1, 1, 1),
             CardFactory.createCard("BaseCard", "3", "BaseCard2", 1, 1, 1),
             CardFactory.createCard("BaseCard", "4", "BaseCard3", 1, 1, 1),
             CardFactory.createCard("BaseCard", "5", "BaseCard4", 1, 1, 1)

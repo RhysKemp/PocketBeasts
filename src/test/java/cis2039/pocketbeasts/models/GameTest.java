@@ -134,7 +134,7 @@ public class GameTest {
         Card attacker = new Card("id", "name", 5, 1, 1);
         Attackable defender = new Player("Player1");
         int initialHealth = defender.getHealth();
-        Game.attackWithCard(attacker, defender);
+        game.attackWithCard(attacker, defender);
         assertTrue(defender.getHealth() < initialHealth);
     }
 
@@ -150,7 +150,7 @@ public class GameTest {
         ArrayList<Player> players = new ArrayList<>();
         players.add(player);
 
-        Game.removeDeadCards(players);
+        game.removeDeadCards(players);
         assertFalse(player.getInPlay().getCards().contains(card));
     }
 
@@ -163,12 +163,11 @@ public class GameTest {
         Card card = new Card("id", "name", 1, 1, 1);
 
         player.getHand().add(card);
-        System.out.println(player.getHand().getCards());
         game.addPlayer(player);
+
         // Regen mana to allow card to be played
         game.regenMana(player);
         game.playCardFromHand(player, card);
-        System.out.println(player.getHand().getCards());
 
         assertFalse(player.getHand().getCards().contains(card));
         assertTrue(player.getInPlay().getCards().contains(card));

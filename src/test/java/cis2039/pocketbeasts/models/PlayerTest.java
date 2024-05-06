@@ -1,12 +1,12 @@
 package cis2039.pocketbeasts.models;
 
-import cis2039.pocketbeasts.interfaces.ICard;
+import cis2039.pocketbeasts.models.factory.CardFactory;
+import cis2039.pocketbeasts.models.factory.DeckFactory;
+import cis2039.pocketbeasts.models.factory.PlayerFactory;
 import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.utils.Config;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -30,11 +30,10 @@ public class PlayerTest {
      */
     @Before
     public void setUp() {
-        deck = new Deck(new ArrayList<ICard>() {{
-            add(new Card("id1", "name1", 1, 2, 3));
-            add(new Card("id2", "name2", 4, 5, 6));
-        }});
-        player = new Player("Test Player", deck);
+        deck = DeckFactory.createDeck("CustomDeck");
+        deck.add(CardFactory.createCard("BaseCard", "id1", "name1", 1, 2, 3));
+        deck.add(CardFactory.createCard("BaseCard", "id2", "name2", 4, 5, 6));
+        player = PlayerFactory.createPlayer("Player", "Test Player", deck);
     }
 
     /**
@@ -50,8 +49,8 @@ public class PlayerTest {
      */
     @Test
     public void getId_ReturnsCorrectIncrementalId() {
-        Player lastPlayer = new Player("New Player", deck);
-        Player newPlayer = new Player("New Player 2", deck);
+        Player lastPlayer = PlayerFactory.createPlayer("Player","New Player", deck);
+        Player newPlayer = PlayerFactory.createPlayer("Player","New Player 2", deck);
         int lastId = lastPlayer.getId();
         assertEquals(lastId + 1, newPlayer.getId());
     }
@@ -69,7 +68,7 @@ public class PlayerTest {
      */
     @Test
     public void setDeck_SetsCorrectDeck() {
-        Deck newDeck = new Deck(new ArrayList<>());
+        Deck newDeck = DeckFactory.createDeck("CustomDeck");
         player.setDeck(newDeck);
         assertEquals(newDeck, player.getDeck());
     }
@@ -167,11 +166,6 @@ public class PlayerTest {
         expected.append("+-------+ +-------+ \n");
         expected.append("0 card(s) in hand.\n");
         expected.append("\n\n\n\n\n\n\n"); // Newlines at the end of the string due to the way hand.toString() is implemented
-
-        // print for comparison
-        System.out.println("player.toString():");
-        System.out.println(player.toString());
-        System.out.println("expected:" + expected);
 
         assertEquals(expected.toString(), player.toString());
     }

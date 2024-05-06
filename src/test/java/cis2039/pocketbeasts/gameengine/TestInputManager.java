@@ -144,12 +144,4 @@ public class TestInputManager implements InputManager {
         return attackChoiceResponses;
     }
 
-    /**
-     * Gets the messages.
-     *
-     * @return The messages.
-     */
-    public List<String> getMessages() {
-        return this.messages;
-    }
 }

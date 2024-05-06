@@ -4,8 +4,8 @@ import cis2039.pocketbeasts.decorators.AttackBoostCardDecorator;
 import cis2039.pocketbeasts.decorators.GlobalAttackBuffCardDecorator;
 import cis2039.pocketbeasts.decorators.GlobalHealthBuffCardDecorator;
 import cis2039.pocketbeasts.decorators.HealthBoostCardDecorator;
-import cis2039.pocketbeasts.interfaces.Attackable;
-import cis2039.pocketbeasts.interfaces.ICard;
+import cis2039.pocketbeasts.gameengine.GameEventNotifier;
+import cis2039.pocketbeasts.interfaces.*;
 import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.utils.Config;
 
@@ -23,8 +23,11 @@ import java.util.ArrayList;
  * @see ICard
  * @see Attackable
  */
-public class Game {
+public class Game implements Subject {
 
+    private boolean gameWon = false;
+
+    private final GameEventNotifier gameEventNotifier = new GameEventNotifier();
     private final ArrayList<Player> players;
 
     public Game() {
@@ -68,16 +71,6 @@ public class Game {
     }
 
     /**
-     * Gets a player by their index in the list of players.
-     *
-     * @param index The index of the player to get.
-     * @return The player at the given index.
-     */
-    public Player getPlayer(int index) {
-        return this.players.get(index);
-    }
-
-    /**
      * Adds mana to the player's mana pool.
      * This is passive regen, not applicable to other methods of mana gain.
      */
@@ -105,11 +98,15 @@ public class Game {
      * @param player The player whose turn it is.
      */
     public void startTurn(Player player) {
+        if (player.isDead()) {
+            gameEventNotifier.notifyObservers("PLAYER_DEAD_AT_TURN_START", player);
+        }
         // Check if the deck is not empty before drawing a card
         if (!player.getDeck().isEmpty()) {
             drawCard(player);
         }
         regenMana(player);
+        gameEventNotifier.notifyObservers("TURN_STARTED", player);
     }
 
     /**
@@ -119,7 +116,7 @@ public class Game {
      */
     public void drawCard(Player player) {
         player.getHand().add(player.getDeck().draw());
-
+        gameEventNotifier.notifyObservers("CARD_DRAWN");
     }
 
     /**
@@ -128,8 +125,9 @@ public class Game {
      * @param attacker The card attacking.
      * @param defender The target of the attack.
      */
-    public static void attackWithCard(ICard attacker, Attackable defender) {
+    public void attackWithCard(ICard attacker, Attackable defender) {
         defender.damage(attacker.getAttack());
+        gameEventNotifier.notifyObservers("ATTACK_MADE");
     }
 
     /**
@@ -137,7 +135,7 @@ public class Game {
      *
      * @param players The players to remove dead cards from.
      */
-    public static void removeDeadCards(ArrayList<Player> players) {
+    public void removeDeadCards(ArrayList<Player> players) {
         for (Player player : players) {
             ArrayList<ICard> toRemove = new ArrayList<>();
             for (ICard card : player.getInPlay().getCards()) {
@@ -147,6 +145,7 @@ public class Game {
                 }
             }
             player.getInPlay().removeAll(toRemove);
+            gameEventNotifier.notifyObservers("DEAD_CARDS_REMOVED");
         }
     }
 
@@ -169,11 +168,40 @@ public class Game {
      * Damage a player with fatigue damage if their deck is empty.
      *
      * @param player The player to damage.
-     * @return {@code boolean} - Whether the player took fatigue damage.
      */
-    public boolean fatigueDamage(Player player) {
+    public void fatigueDamage(Player player) {
         if (player.getDeck().isEmpty()) {
             player.damage(Config.FATIGUE_DAMAGE);
+            gameEventNotifier.notifyObservers("FATIGUE_DAMAGE_TAKEN", player);
+        }
+    }
+
+    /**
+     * Checks if a player is dead.
+     *
+     * @param player The player to check.
+     * @return boolean {@code true} if the player is dead, {@code false} otherwise.
+     */
+    public boolean checkForDeadPlayer(Player player) {
+        if (player.isDead()) {
+            gameEventNotifier.notifyObservers("PLAYER_DEFEATED", player);
+            this.removePlayer(player);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if there is a winner.
+     *
+     * @return boolean {@code true} if there is a winner, {@code false} otherwise.
+     */
+    public boolean checkForWinner() {
+        if (this.players.size() == 1) {
+            if (!gameWon) {
+                gameEventNotifier.notifyObservers("GAME_WON", this.players.get(0));
+                gameWon = true;
+            }
             return true;
         }
         return false;
@@ -190,8 +218,12 @@ public class Game {
      * @param card   The card to apply the decorations from.
      */
     public void applyCardDecorations(Player player, ICard card) {
-        if (card instanceof GlobalAttackBuffCardDecorator) { // Global attack buff decorator
+        // Would notifyObserver each decorator applied to the card for fancy GUI effects
+        if (card instanceof GlobalAttackBuffCardDecorator) {
             globalAttackBuff(player, card);
+        }
+        if (card instanceof GlobalHealthBuffCardDecorator) {
+            globalHealthBuff(player, card);
         }
         // other decorators
     }
@@ -212,6 +244,12 @@ public class Game {
         }
     }
 
+    /**
+     * Apply a global health buff to all cards in play.
+     *
+     * @param player The player to apply the buff to.
+     * @param card   The card to apply the buff from.
+     */
     public void globalHealthBuff(Player player, ICard card) {
         int boostAmount = ((GlobalHealthBuffCardDecorator) card).getBoostAmount();
         for (int i = 0; i < player.getInPlay().getCards().size(); i++) { // Apply the buff to all cards in play bar the buffing card
@@ -222,5 +260,44 @@ public class Game {
         }
     }
 
+    /**
+     * Registers an observer with the game.
+     *
+     * @param observer The observer to register.
+     */
+    @Override
+    public void registerObserver(Observer observer) {
+        gameEventNotifier.registerObserver(observer);
+    }
 
+    /**
+     * Removes an observer from the game.
+     *
+     * @param observer The observer to remove.
+     */
+    @Override
+    public void removeObserver(Observer observer) {
+        gameEventNotifier.removeObserver(observer);
+    }
+
+    /**
+     * Notifies observers of an event.
+     *
+     * @param event The event to notify observers of.
+     */
+    @Override
+    public void notifyObservers(String event) {
+        gameEventNotifier.notifyObservers(event);
+    }
+
+    /**
+     * Notifies observers of an event with an object.
+     *
+     * @param event  The event to notify observers of.
+     * @param object The object to pass to the observers.
+     */
+    @Override
+    public void notifyObservers(String event, Object... object) {
+        gameEventNotifier.notifyObservers(event, object);
+    }
 }

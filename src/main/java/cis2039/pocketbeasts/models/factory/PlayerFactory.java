@@ -1,5 +1,6 @@
 package cis2039.pocketbeasts.models.factory;
 
+import cis2039.pocketbeasts.models.Deck;
 import cis2039.pocketbeasts.models.players.LocalPlayer;
 import cis2039.pocketbeasts.models.players.Player;
 import cis2039.pocketbeasts.models.players.RemotePlayer;
@@ -19,16 +20,37 @@ import cis2039.pocketbeasts.models.players.RemotePlayer;
  * @see cis2039.pocketbeasts.models.players
  */
 public class PlayerFactory {
-    public Player createPlayer(String playerType, String playerName) {
-        switch (playerType) {
-            case "Player":
-                return new Player(playerName);
-            case "LocalPlayer":
-                return new LocalPlayer(playerName);
-            case "RemotePlayer":
-                return new RemotePlayer(playerName);
-            default:
-                throw new IllegalArgumentException("Invalid player type");
-        }
+    /**
+     * Creates a player based on the player type.
+     *
+     * @param playerType The type of player to create.
+     * @param playerName The name of the player.
+     * @return Player The player that was created.
+     */
+    public static Player createPlayer(String playerType, String playerName) {
+        return switch (playerType) {
+            case "Player" -> new Player(playerName);
+            case "LocalPlayer" -> new LocalPlayer(playerName);
+            case "RemotePlayer" -> new RemotePlayer(playerName);
+            default -> throw new IllegalArgumentException("Invalid player type");
+        };
+    }
+
+    /**
+     * Creates a player based on the player type.
+     * Overloaded method that also takes a deck for the player.
+     *
+     * @param playerType The type of player to create.
+     * @param playerName The name of the player.
+     * @param deck      The player's deck.
+     * @return Player The player that was created.
+     */
+    public static Player createPlayer(String playerType, String playerName, Deck deck) {
+        return switch (playerType) {
+            case "Player" -> new Player(playerName, deck);
+            case "LocalPlayer" -> new LocalPlayer(playerName);
+            case "RemotePlayer" -> new RemotePlayer(playerName);
+            default -> throw new IllegalArgumentException("Invalid player type");
+        };
     }
 }

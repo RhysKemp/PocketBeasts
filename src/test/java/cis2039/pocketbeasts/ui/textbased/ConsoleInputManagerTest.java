@@ -2,7 +2,6 @@ package cis2039.pocketbeasts.ui.textbased;
 
 import cis2039.pocketbeasts.gameengine.PlayerManager;
 import cis2039.pocketbeasts.models.Card;
-import cis2039.pocketbeasts.models.Deck;
 import cis2039.pocketbeasts.models.factory.DeckFactory;
 import cis2039.pocketbeasts.models.players.Player;
 import org.junit.Before;
