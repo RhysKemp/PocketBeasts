@@ -15,8 +15,12 @@ import java.util.ArrayList;
  * Represents a game of Pocket Beasts.
  * <p>
  * This class contains methods for managing the game state.
+ * It allows players to draw cards, play cards, attack and take turns.
+ * <p>
+ * It is the Subject in the Observer Design Pattern.
  *
  * @author Rhys Kemp
+ * @see Subject
  * @see Deck
  * @see Player
  * @see Card
@@ -99,14 +103,14 @@ public class Game implements Subject {
      */
     public void startTurn(Player player) {
         if (player.isDead()) {
-            gameEventNotifier.notifyObservers("PLAYER_DEAD_AT_TURN_START", player);
+            notifyObservers("PLAYER_DEAD_AT_TURN_START", player);
         }
         // Check if the deck is not empty before drawing a card
         if (!player.getDeck().isEmpty()) {
             drawCard(player);
         }
         regenMana(player);
-        gameEventNotifier.notifyObservers("TURN_STARTED", player);
+        notifyObservers("TURN_STARTED", player);
     }
 
     /**
@@ -116,7 +120,7 @@ public class Game implements Subject {
      */
     public void drawCard(Player player) {
         player.getHand().add(player.getDeck().draw());
-        gameEventNotifier.notifyObservers("CARD_DRAWN");
+        notifyObservers("CARD_DRAWN");
     }
 
     /**
@@ -127,7 +131,7 @@ public class Game implements Subject {
      */
     public void attackWithCard(ICard attacker, Attackable defender) {
         defender.damage(attacker.getAttack());
-        gameEventNotifier.notifyObservers("ATTACK_MADE");
+        notifyObservers("ATTACK_MADE");
     }
 
     /**
@@ -145,7 +149,7 @@ public class Game implements Subject {
                 }
             }
             player.getInPlay().removeAll(toRemove);
-            gameEventNotifier.notifyObservers("DEAD_CARDS_REMOVED");
+            notifyObservers("DEAD_CARDS_REMOVED");
         }
     }
 
@@ -172,7 +176,7 @@ public class Game implements Subject {
     public void fatigueDamage(Player player) {
         if (player.getDeck().isEmpty()) {
             player.damage(Config.FATIGUE_DAMAGE);
-            gameEventNotifier.notifyObservers("FATIGUE_DAMAGE_TAKEN", player);
+            notifyObservers("FATIGUE_DAMAGE_TAKEN", player);
         }
     }
 
@@ -184,7 +188,7 @@ public class Game implements Subject {
      */
     public boolean checkForDeadPlayer(Player player) {
         if (player.isDead()) {
-            gameEventNotifier.notifyObservers("PLAYER_DEFEATED", player);
+            notifyObservers("PLAYER_DEFEATED", player);
             this.removePlayer(player);
             return true;
         }
@@ -199,7 +203,7 @@ public class Game implements Subject {
     public boolean checkForWinner() {
         if (this.players.size() == 1) {
             if (!gameWon) {
-                gameEventNotifier.notifyObservers("GAME_WON", this.players.get(0));
+                notifyObservers("GAME_WON", this.players.get(0));
                 gameWon = true;
             }
             return true;
