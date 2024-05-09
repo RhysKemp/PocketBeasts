@@ -1,4 +1,4 @@
-package com.mycompany.p3.c2471361.chat;
+package com.mycompany.chatapp.chat;
 
 import java.io.BufferedReader;
 import java.io.IOException;

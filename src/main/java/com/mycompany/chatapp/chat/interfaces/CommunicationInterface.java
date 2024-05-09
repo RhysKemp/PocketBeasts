@@ -1,4 +1,4 @@
-package com.mycompany.p3.c2471361.chat.interfaces;
+package com.mycompany.chatapp.chat.interfaces;
 
 /**
  * Interface for communication between client and server

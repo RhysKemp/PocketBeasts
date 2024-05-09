@@ -3,13 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
  */
 
-package com.mycompany.p3.c2471361;
+package com.mycompany.chatapp;
 
-import com.mycompany.p3.c2471361.chat.ChatWindow;
-import com.mycompany.p3.c2471361.chat.Client;
-import com.mycompany.p3.c2471361.chat.Server;
-import com.mycompany.p3.c2471361.chat.SocketCommunication;
-import com.mycompany.p3.c2471361.chat.interfaces.CommunicationInterface;
+import com.mycompany.chatapp.chat.ChatWindow;
+import com.mycompany.chatapp.chat.Client;
+import com.mycompany.chatapp.chat.Server;
+import com.mycompany.chatapp.chat.SocketCommunication;
+import com.mycompany.chatapp.chat.interfaces.CommunicationInterface;
 
 /**
  *

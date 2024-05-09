@@ -1,4 +1,4 @@
-package com.mycompany.p3.c2471361.chat;
+package com.mycompany.chatapp.chat;
 
 import javax.swing.*;
 import java.util.concurrent.ExecutorService;

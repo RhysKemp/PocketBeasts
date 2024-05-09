@@ -1,6 +1,6 @@
-package com.mycompany.p3.c2471361.chat;
+package com.mycompany.chatapp.chat;
 
-import com.mycompany.p3.c2471361.chat.interfaces.CommunicationInterface;
+import com.mycompany.chatapp.chat.interfaces.CommunicationInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
